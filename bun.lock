@@ -77,6 +77,7 @@
       "name": "@repo/db",
       "version": "1.0.0",
       "dependencies": {
+        "@prisma/client": "^7.2.0",
         "prisma": "^7.2.0",
       },
       "devDependencies": {
@@ -479,6 +480,10 @@
     "@panva/hkdf": ["@panva/hkdf@1.2.1", "", {}, "sha512-6oclG6Y3PiDFcoyk8srjLfVKyMfVCKJ27JwNPViuXziFpmdz+MZnZN/aKY0JGXgYuO/VghU0jcOAZgWXZ1Dmrw=="],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
+
+    "@prisma/client": ["@prisma/client@7.2.0", "", { "dependencies": { "@prisma/client-runtime-utils": "7.2.0" }, "peerDependencies": { "prisma": "*", "typescript": ">=5.4.0" }, "optionalPeers": ["prisma", "typescript"] }, "sha512-JdLF8lWZ+LjKGKpBqyAlenxd/kXjd1Abf/xK+6vUA7R7L2Suo6AFTHFRpPSdAKCan9wzdFApsUpSa/F6+t1AtA=="],
+
+    "@prisma/client-runtime-utils": ["@prisma/client-runtime-utils@7.2.0", "", {}, "sha512-dn7oB53v0tqkB0wBdMuTNFNPdEbfICEUe82Tn9FoKAhJCUkDH+fmyEp0ClciGh+9Hp2Tuu2K52kth2MTLstvmA=="],
 
     "@prisma/config": ["@prisma/config@7.2.0", "", { "dependencies": { "c12": "3.1.0", "deepmerge-ts": "7.1.5", "effect": "3.18.4", "empathic": "2.0.0" } }, "sha512-qmvSnfQ6l/srBW1S7RZGfjTQhc44Yl3ldvU6y3pgmuLM+83SBDs6UQVgMtQuMRe9J3gGqB0RF8wER6RlXEr6jQ=="],
 
