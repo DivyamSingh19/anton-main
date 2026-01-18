@@ -5,23 +5,26 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"bun run build && node dist/index.ts",
-    "build":"tsc -b"
-    
+    "dev": "bun run build && node dist/index.ts",
+    "build": "tsc -b"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
-    "@repo/db":"*"
+    "@repo/db": "*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
+    "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",

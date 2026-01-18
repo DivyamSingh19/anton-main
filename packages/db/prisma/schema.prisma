@@ -14,4 +14,17 @@ datasource db {
 }
 model User{
   id String @id @default(uuid())
+  email String @unique
+  passwordHash String 
+  createdAt String
+  sessions UserSessions[]
+}
+
+model UserSessions{
+  id String @id @default(uuid())
+  userId String?
+  user   User?  @relation(fields: [userId],references: [id])
+  lastLogin String
+  createdAt DateTime
+  updatedAt DateTime
 }
