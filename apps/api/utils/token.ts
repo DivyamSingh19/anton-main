@@ -20,3 +20,19 @@ export const createToken =  async (id:string) => {
 export const decodeToken = async (token:string) => {
     
 }
+
+export const createOrgToken = async (id:string) => {
+    
+}
+
+export const decodeOrgToken = async (token:string) => {
+    
+}
+
+export const createEnggToken = async (id:string) => {
+    
+}
+
+export const decodeEnggToken = async (token:string) => {
+    
+}
