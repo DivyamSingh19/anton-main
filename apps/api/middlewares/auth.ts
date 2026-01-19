@@ -12,7 +12,8 @@ export const authMiddleware = async (req:Request,res:Response,next:NextFunction)
         })
     }
     try {
-        const decoded = decodeToken(token)
+        const decoded = await decodeToken(token)
+        const userId = 
         next()
     } catch (error) {
         return res.status(HTTPStatus.ServerError).json({

@@ -10,8 +10,9 @@ const port = 4000
 declare global{
     namespace Express{
         interface Request{
-            userId:string
-            orgId:string
+            userId?:string
+            orgId?:string
+            engId?:string
         }
     }
 }

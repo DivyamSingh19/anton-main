@@ -1,7 +1,10 @@
 import express,{Request,Response,NextFunction} from "express"
+import { ProjectController } from "../controllers/project.controller"
 
 
-const projectRouter = express.Router()
+const router = express.Router()
+const project = new ProjectController
 
 
-export default projectRouter
+
+export default router

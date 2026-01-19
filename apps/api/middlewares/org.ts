@@ -4,7 +4,7 @@ import { HTTPStatus } from "../utils/error";
 
 
 export const orgAuthMiddleware = async (req:Request,res:Response,next:NextFunction) => {
-    const token = req.cookies.org_main_token
+    const token = req.cookies.org_admin_token
    
     try {
         
@@ -13,8 +13,8 @@ export const orgAuthMiddleware = async (req:Request,res:Response,next:NextFuncti
     }
 }
 
-export const orgUserMiddleware = async (req:Request,res:Response,next:NextFunction) => {
-    const token = req.cookies.org_eng_token
+export const orgEnggMiddleware = async (req:Request,res:Response,next:NextFunction) => {
+    const token = req.cookies.org_engg_token
     if(!token) return res.status(HTTPStatus.Unauthorized).json({success:false,message:"Not a member of the organization"})
     try {
         
