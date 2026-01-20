@@ -26,3 +26,12 @@ export class UnauthorizedError extends Error{
         this.message="Unauthorized error"
     }
 }
+
+export class ServerError extends Error{
+    statusCode:number
+    constructor(message:string){
+        super(message)
+        this.statusCode = HTTPStatus.ServerError
+        this.message="Server failed"
+    }
+}

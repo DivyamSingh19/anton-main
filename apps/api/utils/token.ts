@@ -16,12 +16,7 @@ export const verifyPassword = async (
 };
 
 export const createToken = async (id: string) => {
-  const role = "Solo";
-  const payload = {
-    id,
-    role,
-  };
-  return JWT.sign(payload, process.env.JWT_SECRET as string);
+  return JWT.sign(id, process.env.JWT_SECRET as string);
 };
 
 export const decodeToken = async (token: string) => {

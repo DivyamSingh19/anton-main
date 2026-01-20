@@ -12,8 +12,14 @@ export const authMiddleware = async (req:Request,res:Response,next:NextFunction)
         })
     }
     try {
-        const decoded = await decodeToken(token)
-        const userId = 
+        const decoded = await  decodeToken(token)
+        if(!decoded){
+            return res.json({
+                success:false,
+                message:"Invalid token"
+            })
+        }
+        // req.userId =  decoded.id 
         next()
     } catch (error) {
         return res.status(HTTPStatus.ServerError).json({
