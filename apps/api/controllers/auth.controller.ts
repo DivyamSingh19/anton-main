@@ -1,6 +1,6 @@
 import { Request,Response } from "express";
 import { HTTPStatus } from "../utils/error";
-import { BadRequestError } from "../services/error.service";
+import { BadRequestError, ServerError } from "../services/error.service";
 import { UserService } from "../services/user.service";
 
 export class AuthController{
@@ -21,9 +21,9 @@ export class AuthController{
     }
     login = async (req:Request,res:Response) => {
         try {
-            
+            throw new ServerError("Server failed")
         } catch (error) {
-            
+            throw new ServerError("Server failed")
         }
     }
     logout = async (req:Request,res:Response) => {

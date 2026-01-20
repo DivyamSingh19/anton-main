@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run build && node dist/index.ts",
+    "dev": "bun run build && node dist/index.js",
     "build": "tsc -b"
   },
   "devDependencies": {
