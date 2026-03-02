@@ -1,10 +1,8 @@
 import express,{Request,Response,NextFunction} from "express"
-import { OrganizationController } from "../../controllers/organization.controller"
-
-
+import { OrganizationAuthController } from "../../controllers/organization.controller"
 
 const orgAdmin = express.Router()
-const orgController = new OrganizationController()
+const orgController = new OrganizationAuthController()
 
 orgAdmin.get('/me',async (req:Request,res:Response,next:NextFunction) => {
     try {

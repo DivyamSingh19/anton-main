@@ -4,7 +4,7 @@ import { hashPassword,verifyPassword, createToken } from "../utils/token";
 
 
 
-export class OrganizationController{
+export class OrganizationAuthController{
     register = async (req:Request,res:Response) => {
         try {
             

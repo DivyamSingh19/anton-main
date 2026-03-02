@@ -1,5 +1,5 @@
 import express,{Request,Response} from "express"
-import { HTTPStatus } from "../utils/error"
+import { HTTPStatus } from "../../utils/error"
 
 
 export class FingerprintController{
@@ -16,6 +16,6 @@ export class FingerprintController{
         } catch (error) {
             
         }
-    }//ai model decides this
+    }
     
 }
