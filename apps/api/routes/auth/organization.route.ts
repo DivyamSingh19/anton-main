@@ -1,6 +1,5 @@
 import express,{Request,Response,NextFunction} from "express"
-import { OrganizationAuthController } from "../../controllers/organization.controller"
-
+import { OrganizationAuthController } from "../../controllers/auth/organization.controller"
 const orgAdmin = express.Router()
 const orgController = new OrganizationAuthController()
 

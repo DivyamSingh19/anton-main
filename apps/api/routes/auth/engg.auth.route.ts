@@ -1,5 +1,5 @@
 import express,{ Request,Response,NextFunction } from "express";
-import { EnggController } from "../../controllers/engg.controller";
+import { EnggController } from "../../controllers/auth/engg.controller";
 
 
 

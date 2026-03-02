@@ -1,7 +1,7 @@
 import { Request,Response } from "express";
-import { HTTPStatus } from "../utils/error";
-import { BadRequestError, ServerError } from "../services/error.service";
-import { UserService } from "../services/user.service";
+import { HTTPStatus } from "../../utils/error";
+import { BadRequestError, ServerError } from "../../services/error.service";
+import { UserService } from "../../services/user.service";
 
 export class AuthController{
     private userService : UserService
