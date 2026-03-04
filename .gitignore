@@ -20,7 +20,7 @@ coverage
 
 # Vercel
 .vercel
-.excalidraw
+*.excalidraw
 # Build Outputs
 .next/
 out/
