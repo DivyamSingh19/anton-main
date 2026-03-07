@@ -1,19 +1,15 @@
 {
   "name": "@repo/db",
   "version": "1.0.0",
-  "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "generate": "prisma generate",
+    "postinstall": "bun run generate"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
     "prisma": "^7.4.2"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^7.4.2"
   }

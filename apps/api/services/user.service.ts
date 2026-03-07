@@ -2,24 +2,24 @@ import prisma from "@repo/db";
 import { ServerError } from "./error.service";
 
 
-export class UserService{
-    async findUser(userId:string){
+export class UserService {
+    async findUser(userId: string) {
         try {
-            const response = await prisma.users
+            const response = await prisma.user.findUnique({ where: { id: userId } })
         } catch (error) {
             throw new ServerError("Could not find user")
         }
     }
-    async getUserData(userId:string){
+    async getUserData(userId: string) {
         try {
-            
+
         } catch (error) {
             throw new ServerError("Could not get user data")
         }
     }
-    async checkUser(email:string){
+    async checkUser(email: string) {
         try {
-            const status = await prisma.users
+            const status = await prisma.user.findUnique({ where: { email } })
         } catch (error) {
             throw new ServerError("Could not check user")
         }
