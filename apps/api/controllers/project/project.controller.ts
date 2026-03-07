@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { HTTPStatus } from "../utils/error";
+import { HTTPStatus } from "../../utils/error";
 
 export class ProjectController {
   addProject = async (req: Request, res: Response) => {

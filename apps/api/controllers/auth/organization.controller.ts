@@ -1,6 +1,6 @@
 import { Request,Response } from "express";
-import { HTTPStatus } from "../utils/error";
-import { hashPassword,verifyPassword, createToken } from "../utils/token";
+import { HTTPStatus } from "../../utils/error";
+import { hashPassword,verifyPassword, createToken } from "../../utils/token";
 
 
 

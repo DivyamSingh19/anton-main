@@ -1,14 +1,27 @@
-/*
-  Warnings:
-
-  - Added the required column `name` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- CreateEnum
 CREATE TYPE "ProjectStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'ARCHIVED');
 
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "name" TEXT NOT NULL;
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "passwordHash" TEXT NOT NULL,
+    "createdAt" TEXT NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserSessions" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT,
+    "lastLogin" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "UserSessions_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Engineer" (
@@ -100,6 +113,9 @@ CREATE TABLE "UserPlatforms" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Engineer_email_key" ON "Engineer"("email");
 
 -- CreateIndex
@@ -116,6 +132,9 @@ CREATE UNIQUE INDEX "AdminProfile_adminId_key" ON "AdminProfile"("adminId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "EngineerProfile_engineerId_key" ON "EngineerProfile"("engineerId");
+
+-- AddForeignKey
+ALTER TABLE "UserSessions" ADD CONSTRAINT "UserSessions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Engineer" ADD CONSTRAINT "Engineer_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Organization"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
