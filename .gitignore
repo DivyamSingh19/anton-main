@@ -1,3 +1,7 @@
 node_modules 
 .excalidraw
 .env
+dist
+logs
+cache
+.vscode
