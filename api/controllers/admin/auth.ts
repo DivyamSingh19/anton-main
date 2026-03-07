@@ -1,5 +1,6 @@
 import prisma from "../../db/db";
 import { Request,Response } from "express";
+
 export class AuthController{
     register = async (req:Request,res:Response) => {
         try {
@@ -30,4 +31,3 @@ export class AuthController{
         }
     }
 }
-
