@@ -8,6 +8,11 @@ datasource db {
   url = env("DATABASE_URL")
 }
 
+enum Integrations{
+  DISCORD
+  SLACK
+  
+}
 
 
 model User{
@@ -34,11 +39,13 @@ model Engineer{
   id String @id @default(uuid())
   name String
   email String @unique
+  passwordHash String
   createdAt DateTime
   updatedAt DateTime
   orgId String
   profile EngineerProfile?
   organization Organization @relation(fields: [orgId],references: [id])
+  @@index([id])
 }
 
 model Organization{

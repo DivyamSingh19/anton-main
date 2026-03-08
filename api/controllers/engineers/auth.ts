@@ -1,7 +1,7 @@
 import prisma from "../../db/db";
 import { Request,Response } from "express";
 import { HTTPStatus } from "../../utils/httpstatus";
-
+ 
 export class AuthController{
     register = async (req:Request,res:Response) => {
         try {
@@ -34,7 +34,14 @@ export class AuthController{
                     message:"Engineer already exists"
                 })
             }
-         
+            const passwordHash = "a"
+            const createEngineer = await prisma.engineer.create({
+                data:{
+                    email:email,
+                    password : passwordHash,
+
+                }
+            })
         } catch (error) {
             return res.status(HTTPStatus.InternalError).json({
                 success:false,
