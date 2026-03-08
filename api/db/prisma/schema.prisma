@@ -25,6 +25,7 @@ model User{
   projects UserProject[]
   profile UserProfile?
   platforms UserPlatforms[]
+  wallet UserWallets?
 }
 
 model UserSessions{
@@ -45,6 +46,7 @@ model Engineer{
   orgId String
   profile EngineerProfile?
   organization Organization @relation(fields: [orgId],references: [id])
+  wallet    EngineerWallet?
   @@index([id])
 }
 
@@ -57,6 +59,7 @@ model Organization{
   updatedAt DateTime
   engineers Engineer[]
   admins Admin[]
+  wallet OrganizationWallet?
 }
 
 model Admin{
@@ -69,6 +72,7 @@ model Admin{
   orgId String
   profile AdminProfile?
   organization Organization @relation(fields: [orgId],references: [id])
+  wallet AdminWallet?
 }
 
 model UserProject{
@@ -119,7 +123,48 @@ model EngineerProfile{
 model UserPlatforms{
   id String @id @default(uuid())
   userId String
-  platformName String
+  platformName Integrations
   platformUserId String
   user User @relation(fields: [userId],references: [id])
+}
+
+//wallets
+model UserWallets{
+  id  String @default(uuid()) @id
+  userId String @unique
+  user User @relation(fields: [userId],references: [id])
+  walletAddress String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([id])
+}
+
+model EngineerWallet{
+  id  String @default(uuid()) @id
+  engineerId String @unique
+  engineer Engineer @relation(fields: [engineerId],references: [id])
+  walletAddress String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([id])
+}
+
+model OrganizationWallet{
+  id  String @default(uuid()) @id
+  orgId String @unique
+  organization Organization @relation(fields: [orgId],references: [id])
+  walletAddress String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([id])
+}
+
+model AdminWallet{
+  id  String @default(uuid()) @id
+  adminId String @unique
+  admin Admin @relation(fields: [adminId],references: [id])
+  walletAddress String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([id])
 }
