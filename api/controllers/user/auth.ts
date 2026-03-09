@@ -4,10 +4,14 @@ import { HTTPStatus } from "../../utils/httpstatus";
 import { newUserSchema, userLoginSchema } from "../../zod/user";
 import { createToken, hashPassword } from "../../utils/token";
 import { AuthService } from "../../services/user/auth.service";
+import { SessionService } from "../../services/user/session.service";
+
 export class AuthController {
     private userService : AuthService
+    private sessionService : SessionService
     constructor(){
         this.userService= new AuthService
+        this.sessionService = new SessionService
     }
   register = async (req: Request, res: Response) => {
     try {
@@ -141,6 +145,26 @@ export class AuthController {
   me = async (req: Request, res: Response) => {
     try {
         const userId = req.userId
+        if(!userId){
+          return res.status(HTTPStatus.Unauthorized).json({
+            success:false,
+            message:"Could not find user"
+          })
+        }
+        const user = await this.userService.findUserFromId(userId)
+        if(!user){
+          return res.status(HTTPStatus.Notfound).json({
+            success:false,
+            message:"User not found"
+          })
+        }
+        return res.status(HTTPStatus.Success).json({
+          success:true,
+          data:{
+            email:user.email,
+            username:user.username,
+          }
+        })
     } catch (error) {
       return res.status(HTTPStatus.InternalError).json({
         success: false,
