@@ -134,7 +134,7 @@ export class AuthController {
           messsage:"User not found"
         })
       }
-      const session = this
+      
     } catch (error) {
       return res.status(HTTPStatus.InternalError).json({
         success: false,

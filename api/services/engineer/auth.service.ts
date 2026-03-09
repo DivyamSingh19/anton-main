@@ -38,4 +38,22 @@ export class AuthService{
             throw new ServerError("Could not find engineer, Internal server error")
         }
     } 
+    async create(name:string,email:string,passwordHash:string,orgId:string){
+        try {
+            const createEngineer = await prisma.engineer.create({
+                data:{
+                    name:name,
+                    email:email,
+                    passwordHash:passwordHash,
+                    orgId:orgId
+                }
+            })
+            if(!createEngineer){
+                throw new ServerError("Could not create user, Internal server error")
+            }
+            return createEngineer
+        } catch (error) {
+            throw new ServerError("Could not create user, internal server error")
+        }
+    }
 }
