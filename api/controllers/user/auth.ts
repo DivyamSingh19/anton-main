@@ -117,6 +117,20 @@ export class AuthController {
   };
   logout = async (req: Request, res: Response) => {
     try {
+      const userId = req.userId
+      if(!userId){
+        return res.status(HTTPStatus.BadRequest).json({
+          success:false,
+          message:"Bad request login first"
+        })
+      }
+      const user = this.userService.findUserFromId(userId) 
+      if(!user){
+        return res.status(HTTPStatus.Notfound).json({
+          messsage:"User not found"
+        })
+      }
+      const session = this
     } catch (error) {
       return res.status(HTTPStatus.InternalError).json({
         success: false,
