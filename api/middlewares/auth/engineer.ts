@@ -12,7 +12,6 @@ export const enggAuthMiddleware = async (req:Request,res:Response,next:NextFunct
     try {
         const decoded = await validateToken(token)
         req.engineerId = decoded as string
-        //decode token and extract id
         next()
     } catch (error) {
         return res.status(HTTPStatus.InternalError).json({

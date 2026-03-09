@@ -10,7 +10,6 @@ export const adminAuthMiddleware = async (req:Request,res:Response,next:NextFunc
         })
     } 
     try {
-        //decode token and extract id
         const decoded = await validateToken(token)
         if(!decoded){
             return res.status(HTTPStatus.InternalError).json({
