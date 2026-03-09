@@ -5,8 +5,36 @@ import express,{Request,Response,NextFunction} from "express"
 const auth = new AuthController()
 const userAuth = express.Router()
 
+userAuth.post("/register",async (req:Request,res:Response,next:NextFunction) => {
+    try {
+        auth.register(req,res)
+    } catch (error) {
+        next()
+    }
+})
 
+userAuth.post("/login",async (req:Request,res:Response,next:NextFunction) => {
+    try {
+        auth.login(req,res)
+    } catch (error) {
+        next()
+    }
+})
 
-userAuth.post("/register",auth.register)
+userAuth.post("/logout",async (req:Request,res:Response,next:NextFunction) => {
+    try {
+        auth.logout(req,res)
+    } catch (error) {
+        next()
+    }
+})
+
+userAuth.get("/me",async (req:Request,res:Response,next:NextFunction) => {
+    try {
+        auth.me(req,res)
+    } catch (error) {
+        next()
+    }
+})
 
 export default userAuth
