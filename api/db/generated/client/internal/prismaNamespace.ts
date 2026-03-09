@@ -393,8 +393,11 @@ export const ModelName = {
   User: 'User',
   UserSessions: 'UserSessions',
   Engineer: 'Engineer',
+  EngineerSessions: 'EngineerSessions',
   Organization: 'Organization',
+  OrganizationSessions: 'OrganizationSessions',
   Admin: 'Admin',
+  AdminSessions: 'AdminSessions',
   UserProject: 'UserProject',
   UserProfile: 'UserProfile',
   AdminProfile: 'AdminProfile',
@@ -403,7 +406,8 @@ export const ModelName = {
   UserWallets: 'UserWallets',
   EngineerWallet: 'EngineerWallet',
   OrganizationWallet: 'OrganizationWallet',
-  AdminWallet: 'AdminWallet'
+  AdminWallet: 'AdminWallet',
+  ContractFingerPrint: 'ContractFingerPrint'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -419,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userSessions" | "engineer" | "organization" | "admin" | "userProject" | "userProfile" | "adminProfile" | "engineerProfile" | "userPlatforms" | "userWallets" | "engineerWallet" | "organizationWallet" | "adminWallet"
+    modelProps: "user" | "userSessions" | "engineer" | "engineerSessions" | "organization" | "organizationSessions" | "admin" | "adminSessions" | "userProject" | "userProfile" | "adminProfile" | "engineerProfile" | "userPlatforms" | "userWallets" | "engineerWallet" | "organizationWallet" | "adminWallet" | "contractFingerPrint"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -645,6 +649,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    EngineerSessions: {
+      payload: Prisma.$EngineerSessionsPayload<ExtArgs>
+      fields: Prisma.EngineerSessionsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EngineerSessionsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EngineerSessionsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>
+        }
+        findFirst: {
+          args: Prisma.EngineerSessionsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EngineerSessionsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>
+        }
+        findMany: {
+          args: Prisma.EngineerSessionsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>[]
+        }
+        create: {
+          args: Prisma.EngineerSessionsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>
+        }
+        createMany: {
+          args: Prisma.EngineerSessionsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EngineerSessionsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>[]
+        }
+        delete: {
+          args: Prisma.EngineerSessionsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>
+        }
+        update: {
+          args: Prisma.EngineerSessionsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>
+        }
+        deleteMany: {
+          args: Prisma.EngineerSessionsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EngineerSessionsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EngineerSessionsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>[]
+        }
+        upsert: {
+          args: Prisma.EngineerSessionsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EngineerSessionsPayload>
+        }
+        aggregate: {
+          args: Prisma.EngineerSessionsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEngineerSessions>
+        }
+        groupBy: {
+          args: Prisma.EngineerSessionsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EngineerSessionsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EngineerSessionsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EngineerSessionsCountAggregateOutputType> | number
+        }
+      }
+    }
     Organization: {
       payload: Prisma.$OrganizationPayload<ExtArgs>
       fields: Prisma.OrganizationFieldRefs
@@ -719,6 +797,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OrganizationSessions: {
+      payload: Prisma.$OrganizationSessionsPayload<ExtArgs>
+      fields: Prisma.OrganizationSessionsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrganizationSessionsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrganizationSessionsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>
+        }
+        findFirst: {
+          args: Prisma.OrganizationSessionsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrganizationSessionsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>
+        }
+        findMany: {
+          args: Prisma.OrganizationSessionsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>[]
+        }
+        create: {
+          args: Prisma.OrganizationSessionsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>
+        }
+        createMany: {
+          args: Prisma.OrganizationSessionsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OrganizationSessionsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>[]
+        }
+        delete: {
+          args: Prisma.OrganizationSessionsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>
+        }
+        update: {
+          args: Prisma.OrganizationSessionsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>
+        }
+        deleteMany: {
+          args: Prisma.OrganizationSessionsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrganizationSessionsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OrganizationSessionsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>[]
+        }
+        upsert: {
+          args: Prisma.OrganizationSessionsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationSessionsPayload>
+        }
+        aggregate: {
+          args: Prisma.OrganizationSessionsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationSessions>
+        }
+        groupBy: {
+          args: Prisma.OrganizationSessionsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationSessionsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrganizationSessionsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationSessionsCountAggregateOutputType> | number
+        }
+      }
+    }
     Admin: {
       payload: Prisma.$AdminPayload<ExtArgs>
       fields: Prisma.AdminFieldRefs
@@ -790,6 +942,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AdminCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AdminCountAggregateOutputType> | number
+        }
+      }
+    }
+    AdminSessions: {
+      payload: Prisma.$AdminSessionsPayload<ExtArgs>
+      fields: Prisma.AdminSessionsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AdminSessionsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AdminSessionsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>
+        }
+        findFirst: {
+          args: Prisma.AdminSessionsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AdminSessionsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>
+        }
+        findMany: {
+          args: Prisma.AdminSessionsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>[]
+        }
+        create: {
+          args: Prisma.AdminSessionsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>
+        }
+        createMany: {
+          args: Prisma.AdminSessionsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AdminSessionsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>[]
+        }
+        delete: {
+          args: Prisma.AdminSessionsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>
+        }
+        update: {
+          args: Prisma.AdminSessionsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>
+        }
+        deleteMany: {
+          args: Prisma.AdminSessionsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AdminSessionsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AdminSessionsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>[]
+        }
+        upsert: {
+          args: Prisma.AdminSessionsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminSessionsPayload>
+        }
+        aggregate: {
+          args: Prisma.AdminSessionsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdminSessions>
+        }
+        groupBy: {
+          args: Prisma.AdminSessionsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminSessionsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AdminSessionsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminSessionsCountAggregateOutputType> | number
         }
       }
     }
@@ -1459,6 +1685,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ContractFingerPrint: {
+      payload: Prisma.$ContractFingerPrintPayload<ExtArgs>
+      fields: Prisma.ContractFingerPrintFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractFingerPrintFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractFingerPrintFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractFingerPrintFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractFingerPrintFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>
+        }
+        findMany: {
+          args: Prisma.ContractFingerPrintFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>[]
+        }
+        create: {
+          args: Prisma.ContractFingerPrintCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>
+        }
+        createMany: {
+          args: Prisma.ContractFingerPrintCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContractFingerPrintCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>[]
+        }
+        delete: {
+          args: Prisma.ContractFingerPrintDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>
+        }
+        update: {
+          args: Prisma.ContractFingerPrintUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractFingerPrintDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractFingerPrintUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContractFingerPrintUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>[]
+        }
+        upsert: {
+          args: Prisma.ContractFingerPrintUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractFingerPrintPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractFingerPrintAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractFingerPrint>
+        }
+        groupBy: {
+          args: Prisma.ContractFingerPrintGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractFingerPrintGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractFingerPrintCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractFingerPrintCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1513,6 +1813,8 @@ export const UserSessionsScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   lastLogin: 'lastLogin',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1533,6 +1835,19 @@ export const EngineerScalarFieldEnum = {
 export type EngineerScalarFieldEnum = (typeof EngineerScalarFieldEnum)[keyof typeof EngineerScalarFieldEnum]
 
 
+export const EngineerSessionsScalarFieldEnum = {
+  id: 'id',
+  engineerId: 'engineerId',
+  lastLogin: 'lastLogin',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EngineerSessionsScalarFieldEnum = (typeof EngineerSessionsScalarFieldEnum)[keyof typeof EngineerSessionsScalarFieldEnum]
+
+
 export const OrganizationScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1543,6 +1858,19 @@ export const OrganizationScalarFieldEnum = {
 } as const
 
 export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const OrganizationSessionsScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  lastLogin: 'lastLogin',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationSessionsScalarFieldEnum = (typeof OrganizationSessionsScalarFieldEnum)[keyof typeof OrganizationSessionsScalarFieldEnum]
 
 
 export const AdminScalarFieldEnum = {
@@ -1556,6 +1884,19 @@ export const AdminScalarFieldEnum = {
 } as const
 
 export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+
+
+export const AdminSessionsScalarFieldEnum = {
+  id: 'id',
+  adminId: 'adminId',
+  lastLogin: 'lastLogin',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminSessionsScalarFieldEnum = (typeof AdminSessionsScalarFieldEnum)[keyof typeof AdminSessionsScalarFieldEnum]
 
 
 export const UserProjectScalarFieldEnum = {
@@ -1652,6 +1993,15 @@ export const AdminWalletScalarFieldEnum = {
 } as const
 
 export type AdminWalletScalarFieldEnum = (typeof AdminWalletScalarFieldEnum)[keyof typeof AdminWalletScalarFieldEnum]
+
+
+export const ContractFingerPrintScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractFingerPrintScalarFieldEnum = (typeof ContractFingerPrintScalarFieldEnum)[keyof typeof ContractFingerPrintScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1843,8 +2193,11 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   userSessions?: Prisma.UserSessionsOmit
   engineer?: Prisma.EngineerOmit
+  engineerSessions?: Prisma.EngineerSessionsOmit
   organization?: Prisma.OrganizationOmit
+  organizationSessions?: Prisma.OrganizationSessionsOmit
   admin?: Prisma.AdminOmit
+  adminSessions?: Prisma.AdminSessionsOmit
   userProject?: Prisma.UserProjectOmit
   userProfile?: Prisma.UserProfileOmit
   adminProfile?: Prisma.AdminProfileOmit
@@ -1854,6 +2207,7 @@ export type GlobalOmitConfig = {
   engineerWallet?: Prisma.EngineerWalletOmit
   organizationWallet?: Prisma.OrganizationWalletOmit
   adminWallet?: Prisma.AdminWalletOmit
+  contractFingerPrint?: Prisma.ContractFingerPrintOmit
 }
 
 /* Types for Logging */

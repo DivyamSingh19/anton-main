@@ -385,6 +385,10 @@ export type EnumProjectStatusFieldUpdateOperationsInput = {
   set?: $Enums.ProjectStatus
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type UserProjectCreateWithoutUserInput = {
   id?: string
   projectId: string

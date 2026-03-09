@@ -11,7 +11,8 @@
 
 export const Integrations = {
   DISCORD: 'DISCORD',
-  SLACK: 'SLACK'
+  SLACK: 'SLACK',
+  TELEGRAM: 'TELEGRAM'
 } as const
 
 export type Integrations = (typeof Integrations)[keyof typeof Integrations]

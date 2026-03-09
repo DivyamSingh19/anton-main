@@ -52,8 +52,11 @@ export const ModelName = {
   User: 'User',
   UserSessions: 'UserSessions',
   Engineer: 'Engineer',
+  EngineerSessions: 'EngineerSessions',
   Organization: 'Organization',
+  OrganizationSessions: 'OrganizationSessions',
   Admin: 'Admin',
+  AdminSessions: 'AdminSessions',
   UserProject: 'UserProject',
   UserProfile: 'UserProfile',
   AdminProfile: 'AdminProfile',
@@ -62,7 +65,8 @@ export const ModelName = {
   UserWallets: 'UserWallets',
   EngineerWallet: 'EngineerWallet',
   OrganizationWallet: 'OrganizationWallet',
-  AdminWallet: 'AdminWallet'
+  AdminWallet: 'AdminWallet',
+  ContractFingerPrint: 'ContractFingerPrint'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -96,6 +100,8 @@ export const UserSessionsScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   lastLogin: 'lastLogin',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -116,6 +122,19 @@ export const EngineerScalarFieldEnum = {
 export type EngineerScalarFieldEnum = (typeof EngineerScalarFieldEnum)[keyof typeof EngineerScalarFieldEnum]
 
 
+export const EngineerSessionsScalarFieldEnum = {
+  id: 'id',
+  engineerId: 'engineerId',
+  lastLogin: 'lastLogin',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EngineerSessionsScalarFieldEnum = (typeof EngineerSessionsScalarFieldEnum)[keyof typeof EngineerSessionsScalarFieldEnum]
+
+
 export const OrganizationScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -126,6 +145,19 @@ export const OrganizationScalarFieldEnum = {
 } as const
 
 export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const OrganizationSessionsScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  lastLogin: 'lastLogin',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationSessionsScalarFieldEnum = (typeof OrganizationSessionsScalarFieldEnum)[keyof typeof OrganizationSessionsScalarFieldEnum]
 
 
 export const AdminScalarFieldEnum = {
@@ -139,6 +171,19 @@ export const AdminScalarFieldEnum = {
 } as const
 
 export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+
+
+export const AdminSessionsScalarFieldEnum = {
+  id: 'id',
+  adminId: 'adminId',
+  lastLogin: 'lastLogin',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminSessionsScalarFieldEnum = (typeof AdminSessionsScalarFieldEnum)[keyof typeof AdminSessionsScalarFieldEnum]
 
 
 export const UserProjectScalarFieldEnum = {
@@ -235,6 +280,15 @@ export const AdminWalletScalarFieldEnum = {
 } as const
 
 export type AdminWalletScalarFieldEnum = (typeof AdminWalletScalarFieldEnum)[keyof typeof AdminWalletScalarFieldEnum]
+
+
+export const ContractFingerPrintScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractFingerPrintScalarFieldEnum = (typeof ContractFingerPrintScalarFieldEnum)[keyof typeof ContractFingerPrintScalarFieldEnum]
 
 
 export const SortOrder = {

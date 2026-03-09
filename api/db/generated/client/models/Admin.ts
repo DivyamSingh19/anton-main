@@ -201,6 +201,7 @@ export type AdminWhereInput = {
   profile?: Prisma.XOR<Prisma.AdminProfileNullableScalarRelationFilter, Prisma.AdminProfileWhereInput> | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   wallet?: Prisma.XOR<Prisma.AdminWalletNullableScalarRelationFilter, Prisma.AdminWalletWhereInput> | null
+  sessions?: Prisma.AdminSessionsListRelationFilter
 }
 
 export type AdminOrderByWithRelationInput = {
@@ -214,6 +215,7 @@ export type AdminOrderByWithRelationInput = {
   profile?: Prisma.AdminProfileOrderByWithRelationInput
   organization?: Prisma.OrganizationOrderByWithRelationInput
   wallet?: Prisma.AdminWalletOrderByWithRelationInput
+  sessions?: Prisma.AdminSessionsOrderByRelationAggregateInput
 }
 
 export type AdminWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +232,7 @@ export type AdminWhereUniqueInput = Prisma.AtLeast<{
   profile?: Prisma.XOR<Prisma.AdminProfileNullableScalarRelationFilter, Prisma.AdminProfileWhereInput> | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   wallet?: Prisma.XOR<Prisma.AdminWalletNullableScalarRelationFilter, Prisma.AdminWalletWhereInput> | null
+  sessions?: Prisma.AdminSessionsListRelationFilter
 }, "id" | "email">
 
 export type AdminOrderByWithAggregationInput = {
@@ -268,6 +271,7 @@ export type AdminCreateInput = {
   profile?: Prisma.AdminProfileCreateNestedOneWithoutAdminInput
   organization: Prisma.OrganizationCreateNestedOneWithoutAdminsInput
   wallet?: Prisma.AdminWalletCreateNestedOneWithoutAdminInput
+  sessions?: Prisma.AdminSessionsCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUncheckedCreateInput = {
@@ -280,6 +284,7 @@ export type AdminUncheckedCreateInput = {
   orgId: string
   profile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAdminInput
   wallet?: Prisma.AdminWalletUncheckedCreateNestedOneWithoutAdminInput
+  sessions?: Prisma.AdminSessionsUncheckedCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUpdateInput = {
@@ -292,6 +297,7 @@ export type AdminUpdateInput = {
   profile?: Prisma.AdminProfileUpdateOneWithoutAdminNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutAdminsNestedInput
   wallet?: Prisma.AdminWalletUpdateOneWithoutAdminNestedInput
+  sessions?: Prisma.AdminSessionsUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminUncheckedUpdateInput = {
@@ -304,6 +310,7 @@ export type AdminUncheckedUpdateInput = {
   orgId?: Prisma.StringFieldUpdateOperationsInput | string
   profile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAdminNestedInput
   wallet?: Prisma.AdminWalletUncheckedUpdateOneWithoutAdminNestedInput
+  sessions?: Prisma.AdminSessionsUncheckedUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminCreateManyInput = {
@@ -422,6 +429,20 @@ export type AdminUncheckedUpdateManyWithoutOrganizationNestedInput = {
   deleteMany?: Prisma.AdminScalarWhereInput | Prisma.AdminScalarWhereInput[]
 }
 
+export type AdminCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.AdminCreateWithoutSessionsInput, Prisma.AdminUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.AdminWhereUniqueInput
+}
+
+export type AdminUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminCreateWithoutSessionsInput, Prisma.AdminUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.AdminUpsertWithoutSessionsInput
+  connect?: Prisma.AdminWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutSessionsInput, Prisma.AdminUpdateWithoutSessionsInput>, Prisma.AdminUncheckedUpdateWithoutSessionsInput>
+}
+
 export type AdminCreateNestedOneWithoutProfileInput = {
   create?: Prisma.XOR<Prisma.AdminCreateWithoutProfileInput, Prisma.AdminUncheckedCreateWithoutProfileInput>
   connectOrCreate?: Prisma.AdminCreateOrConnectWithoutProfileInput
@@ -459,6 +480,7 @@ export type AdminCreateWithoutOrganizationInput = {
   updatedAt?: Date | string
   profile?: Prisma.AdminProfileCreateNestedOneWithoutAdminInput
   wallet?: Prisma.AdminWalletCreateNestedOneWithoutAdminInput
+  sessions?: Prisma.AdminSessionsCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUncheckedCreateWithoutOrganizationInput = {
@@ -470,6 +492,7 @@ export type AdminUncheckedCreateWithoutOrganizationInput = {
   updatedAt?: Date | string
   profile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAdminInput
   wallet?: Prisma.AdminWalletUncheckedCreateNestedOneWithoutAdminInput
+  sessions?: Prisma.AdminSessionsUncheckedCreateNestedManyWithoutAdminInput
 }
 
 export type AdminCreateOrConnectWithoutOrganizationInput = {
@@ -511,6 +534,70 @@ export type AdminScalarWhereInput = {
   orgId?: Prisma.StringFilter<"Admin"> | string
 }
 
+export type AdminCreateWithoutSessionsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.AdminProfileCreateNestedOneWithoutAdminInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutAdminsInput
+  wallet?: Prisma.AdminWalletCreateNestedOneWithoutAdminInput
+}
+
+export type AdminUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  orgId: string
+  profile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAdminInput
+  wallet?: Prisma.AdminWalletUncheckedCreateNestedOneWithoutAdminInput
+}
+
+export type AdminCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.AdminWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminCreateWithoutSessionsInput, Prisma.AdminUncheckedCreateWithoutSessionsInput>
+}
+
+export type AdminUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.AdminUpdateWithoutSessionsInput, Prisma.AdminUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.AdminCreateWithoutSessionsInput, Prisma.AdminUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.AdminWhereInput
+}
+
+export type AdminUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.AdminWhereInput
+  data: Prisma.XOR<Prisma.AdminUpdateWithoutSessionsInput, Prisma.AdminUncheckedUpdateWithoutSessionsInput>
+}
+
+export type AdminUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.AdminProfileUpdateOneWithoutAdminNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutAdminsNestedInput
+  wallet?: Prisma.AdminWalletUpdateOneWithoutAdminNestedInput
+}
+
+export type AdminUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orgId?: Prisma.StringFieldUpdateOperationsInput | string
+  profile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAdminNestedInput
+  wallet?: Prisma.AdminWalletUncheckedUpdateOneWithoutAdminNestedInput
+}
+
 export type AdminCreateWithoutProfileInput = {
   id?: string
   name: string
@@ -520,6 +607,7 @@ export type AdminCreateWithoutProfileInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutAdminsInput
   wallet?: Prisma.AdminWalletCreateNestedOneWithoutAdminInput
+  sessions?: Prisma.AdminSessionsCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUncheckedCreateWithoutProfileInput = {
@@ -531,6 +619,7 @@ export type AdminUncheckedCreateWithoutProfileInput = {
   updatedAt?: Date | string
   orgId: string
   wallet?: Prisma.AdminWalletUncheckedCreateNestedOneWithoutAdminInput
+  sessions?: Prisma.AdminSessionsUncheckedCreateNestedManyWithoutAdminInput
 }
 
 export type AdminCreateOrConnectWithoutProfileInput = {
@@ -558,6 +647,7 @@ export type AdminUpdateWithoutProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutAdminsNestedInput
   wallet?: Prisma.AdminWalletUpdateOneWithoutAdminNestedInput
+  sessions?: Prisma.AdminSessionsUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutProfileInput = {
@@ -569,6 +659,7 @@ export type AdminUncheckedUpdateWithoutProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orgId?: Prisma.StringFieldUpdateOperationsInput | string
   wallet?: Prisma.AdminWalletUncheckedUpdateOneWithoutAdminNestedInput
+  sessions?: Prisma.AdminSessionsUncheckedUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminCreateWithoutWalletInput = {
@@ -580,6 +671,7 @@ export type AdminCreateWithoutWalletInput = {
   updatedAt?: Date | string
   profile?: Prisma.AdminProfileCreateNestedOneWithoutAdminInput
   organization: Prisma.OrganizationCreateNestedOneWithoutAdminsInput
+  sessions?: Prisma.AdminSessionsCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUncheckedCreateWithoutWalletInput = {
@@ -591,6 +683,7 @@ export type AdminUncheckedCreateWithoutWalletInput = {
   updatedAt?: Date | string
   orgId: string
   profile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAdminInput
+  sessions?: Prisma.AdminSessionsUncheckedCreateNestedManyWithoutAdminInput
 }
 
 export type AdminCreateOrConnectWithoutWalletInput = {
@@ -618,6 +711,7 @@ export type AdminUpdateWithoutWalletInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.AdminProfileUpdateOneWithoutAdminNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutAdminsNestedInput
+  sessions?: Prisma.AdminSessionsUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutWalletInput = {
@@ -629,6 +723,7 @@ export type AdminUncheckedUpdateWithoutWalletInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orgId?: Prisma.StringFieldUpdateOperationsInput | string
   profile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAdminNestedInput
+  sessions?: Prisma.AdminSessionsUncheckedUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminCreateManyOrganizationInput = {
@@ -649,6 +744,7 @@ export type AdminUpdateWithoutOrganizationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.AdminProfileUpdateOneWithoutAdminNestedInput
   wallet?: Prisma.AdminWalletUpdateOneWithoutAdminNestedInput
+  sessions?: Prisma.AdminSessionsUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutOrganizationInput = {
@@ -660,6 +756,7 @@ export type AdminUncheckedUpdateWithoutOrganizationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAdminNestedInput
   wallet?: Prisma.AdminWalletUncheckedUpdateOneWithoutAdminNestedInput
+  sessions?: Prisma.AdminSessionsUncheckedUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminUncheckedUpdateManyWithoutOrganizationInput = {
@@ -671,6 +768,35 @@ export type AdminUncheckedUpdateManyWithoutOrganizationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type AdminCountOutputType
+ */
+
+export type AdminCountOutputType = {
+  sessions: number
+}
+
+export type AdminCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  sessions?: boolean | AdminCountOutputTypeCountSessionsArgs
+}
+
+/**
+ * AdminCountOutputType without action
+ */
+export type AdminCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminCountOutputType
+   */
+  select?: Prisma.AdminCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AdminCountOutputType without action
+ */
+export type AdminCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminSessionsWhereInput
+}
 
 
 export type AdminSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -684,6 +810,8 @@ export type AdminSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   profile?: boolean | Prisma.Admin$profileArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   wallet?: boolean | Prisma.Admin$walletArgs<ExtArgs>
+  sessions?: boolean | Prisma.Admin$sessionsArgs<ExtArgs>
+  _count?: boolean | Prisma.AdminCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["admin"]>
 
 export type AdminSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -723,6 +851,8 @@ export type AdminInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   profile?: boolean | Prisma.Admin$profileArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   wallet?: boolean | Prisma.Admin$walletArgs<ExtArgs>
+  sessions?: boolean | Prisma.Admin$sessionsArgs<ExtArgs>
+  _count?: boolean | Prisma.AdminCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AdminIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -737,6 +867,7 @@ export type $AdminPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     profile: Prisma.$AdminProfilePayload<ExtArgs> | null
     organization: Prisma.$OrganizationPayload<ExtArgs>
     wallet: Prisma.$AdminWalletPayload<ExtArgs> | null
+    sessions: Prisma.$AdminSessionsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1143,6 +1274,7 @@ export interface Prisma__AdminClient<T, Null = never, ExtArgs extends runtime.Ty
   profile<T extends Prisma.Admin$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$profileArgs<ExtArgs>>): Prisma.Prisma__AdminProfileClient<runtime.Types.Result.GetResult<Prisma.$AdminProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   wallet<T extends Prisma.Admin$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$walletArgs<ExtArgs>>): Prisma.Prisma__AdminWalletClient<runtime.Types.Result.GetResult<Prisma.$AdminWalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sessions<T extends Prisma.Admin$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminSessionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1610,6 +1742,30 @@ export type Admin$walletArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   include?: Prisma.AdminWalletInclude<ExtArgs> | null
   where?: Prisma.AdminWalletWhereInput
+}
+
+/**
+ * Admin.sessions
+ */
+export type Admin$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminSessions
+   */
+  select?: Prisma.AdminSessionsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdminSessions
+   */
+  omit?: Prisma.AdminSessionsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminSessionsInclude<ExtArgs> | null
+  where?: Prisma.AdminSessionsWhereInput
+  orderBy?: Prisma.AdminSessionsOrderByWithRelationInput | Prisma.AdminSessionsOrderByWithRelationInput[]
+  cursor?: Prisma.AdminSessionsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AdminSessionsScalarFieldEnum | Prisma.AdminSessionsScalarFieldEnum[]
 }
 
 /**

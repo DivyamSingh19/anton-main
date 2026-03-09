@@ -33,15 +33,30 @@ export type UserSessions = Prisma.UserSessionsModel
  */
 export type Engineer = Prisma.EngineerModel
 /**
+ * Model EngineerSessions
+ * 
+ */
+export type EngineerSessions = Prisma.EngineerSessionsModel
+/**
  * Model Organization
  * 
  */
 export type Organization = Prisma.OrganizationModel
 /**
+ * Model OrganizationSessions
+ * 
+ */
+export type OrganizationSessions = Prisma.OrganizationSessionsModel
+/**
  * Model Admin
  * 
  */
 export type Admin = Prisma.AdminModel
+/**
+ * Model AdminSessions
+ * 
+ */
+export type AdminSessions = Prisma.AdminSessionsModel
 /**
  * Model UserProject
  * 
@@ -87,3 +102,8 @@ export type OrganizationWallet = Prisma.OrganizationWalletModel
  * 
  */
 export type AdminWallet = Prisma.AdminWalletModel
+/**
+ * Model ContractFingerPrint
+ * 
+ */
+export type ContractFingerPrint = Prisma.ContractFingerPrintModel

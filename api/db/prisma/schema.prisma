@@ -11,9 +11,8 @@ datasource db {
 enum Integrations{
   DISCORD
   SLACK
-  
+  TELEGRAM
 }
-
 
 model User{
   id String @id @default(uuid())
@@ -22,7 +21,7 @@ model User{
   passwordHash String 
   createdAt DateTime @default(now())
   sessions UserSessions[]
-  projects UserProject[]
+  projects UserProject[]                      
   profile UserProfile?
   platforms UserPlatforms[]
   wallet UserWallets?
@@ -30,11 +29,15 @@ model User{
 
 model UserSessions{
   id String @id @default(uuid())
-  userId String?
-  user   User?  @relation(fields: [userId],references: [id])
-  lastLogin String
+  userId String
+  user   User  @relation(fields: [userId],references: [id])
+  lastLogin DateTime
+  sessionToken String @unique
+  expiresAt DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 model Engineer{
   id String @id @default(uuid())
@@ -47,7 +50,21 @@ model Engineer{
   profile EngineerProfile?
   organization Organization @relation(fields: [orgId],references: [id])
   wallet    EngineerWallet?
+  sessions  EngineerSessions[]
   @@index([id])
+}
+
+model EngineerSessions{
+  id String @id @default(uuid())
+  engineerId String
+  engineer   Engineer  @relation(fields: [engineerId],references: [id])
+  lastLogin DateTime
+  sessionToken String @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([engineerId])
 }
 
 model Organization{
@@ -60,8 +77,21 @@ model Organization{
   engineers Engineer[]
   admins Admin[]
   wallet OrganizationWallet?
+  sessions  OrganizationSessions[]
+  @@index([id])
 }
+model OrganizationSessions{
+  id  String @id @default(uuid())
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId],references: [id])
+  lastLogin DateTime
+  sessionToken String @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  @@index([organizationId])
+}
 model Admin{
   id String @id @default(uuid())
   name String
@@ -73,8 +103,22 @@ model Admin{
   profile AdminProfile?
   organization Organization @relation(fields: [orgId],references: [id])
   wallet AdminWallet?
-}
+  sessions  AdminSessions[]
 
+  @@index([id])
+}
+model AdminSessions{
+  id  String @id @default(uuid())
+  adminId String
+  admin   Admin  @relation(fields: [adminId],references: [id])
+  lastLogin DateTime
+  sessionToken String @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([adminId])
+}
 model UserProject{
   id String @id @default(uuid())
   userId String
@@ -167,4 +211,10 @@ model AdminWallet{
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@index([id])
+}
+
+model ContractFingerPrint{
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
