@@ -28,6 +28,7 @@ export type EngineerMinAggregateOutputType = {
   id: string | null
   name: string | null
   email: string | null
+  passwordHash: string | null
   createdAt: Date | null
   updatedAt: Date | null
   orgId: string | null
@@ -37,6 +38,7 @@ export type EngineerMaxAggregateOutputType = {
   id: string | null
   name: string | null
   email: string | null
+  passwordHash: string | null
   createdAt: Date | null
   updatedAt: Date | null
   orgId: string | null
@@ -46,6 +48,7 @@ export type EngineerCountAggregateOutputType = {
   id: number
   name: number
   email: number
+  passwordHash: number
   createdAt: number
   updatedAt: number
   orgId: number
@@ -57,6 +60,7 @@ export type EngineerMinAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  passwordHash?: true
   createdAt?: true
   updatedAt?: true
   orgId?: true
@@ -66,6 +70,7 @@ export type EngineerMaxAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  passwordHash?: true
   createdAt?: true
   updatedAt?: true
   orgId?: true
@@ -75,6 +80,7 @@ export type EngineerCountAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  passwordHash?: true
   createdAt?: true
   updatedAt?: true
   orgId?: true
@@ -157,6 +163,7 @@ export type EngineerGroupByOutputType = {
   id: string
   name: string
   email: string
+  passwordHash: string
   createdAt: Date
   updatedAt: Date
   orgId: string
@@ -187,22 +194,26 @@ export type EngineerWhereInput = {
   id?: Prisma.StringFilter<"Engineer"> | string
   name?: Prisma.StringFilter<"Engineer"> | string
   email?: Prisma.StringFilter<"Engineer"> | string
+  passwordHash?: Prisma.StringFilter<"Engineer"> | string
   createdAt?: Prisma.DateTimeFilter<"Engineer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Engineer"> | Date | string
   orgId?: Prisma.StringFilter<"Engineer"> | string
   profile?: Prisma.XOR<Prisma.EngineerProfileNullableScalarRelationFilter, Prisma.EngineerProfileWhereInput> | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  wallet?: Prisma.XOR<Prisma.EngineerWalletNullableScalarRelationFilter, Prisma.EngineerWalletWhereInput> | null
 }
 
 export type EngineerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   orgId?: Prisma.SortOrder
   profile?: Prisma.EngineerProfileOrderByWithRelationInput
   organization?: Prisma.OrganizationOrderByWithRelationInput
+  wallet?: Prisma.EngineerWalletOrderByWithRelationInput
 }
 
 export type EngineerWhereUniqueInput = Prisma.AtLeast<{
@@ -212,17 +223,20 @@ export type EngineerWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.EngineerWhereInput[]
   NOT?: Prisma.EngineerWhereInput | Prisma.EngineerWhereInput[]
   name?: Prisma.StringFilter<"Engineer"> | string
+  passwordHash?: Prisma.StringFilter<"Engineer"> | string
   createdAt?: Prisma.DateTimeFilter<"Engineer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Engineer"> | Date | string
   orgId?: Prisma.StringFilter<"Engineer"> | string
   profile?: Prisma.XOR<Prisma.EngineerProfileNullableScalarRelationFilter, Prisma.EngineerProfileWhereInput> | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  wallet?: Prisma.XOR<Prisma.EngineerWalletNullableScalarRelationFilter, Prisma.EngineerWalletWhereInput> | null
 }, "id" | "email">
 
 export type EngineerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   orgId?: Prisma.SortOrder
@@ -238,6 +252,7 @@ export type EngineerScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Engineer"> | string
   name?: Prisma.StringWithAggregatesFilter<"Engineer"> | string
   email?: Prisma.StringWithAggregatesFilter<"Engineer"> | string
+  passwordHash?: Prisma.StringWithAggregatesFilter<"Engineer"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Engineer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Engineer"> | Date | string
   orgId?: Prisma.StringWithAggregatesFilter<"Engineer"> | string
@@ -247,48 +262,57 @@ export type EngineerCreateInput = {
   id?: string
   name: string
   email: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   profile?: Prisma.EngineerProfileCreateNestedOneWithoutEngineerInput
   organization: Prisma.OrganizationCreateNestedOneWithoutEngineersInput
+  wallet?: Prisma.EngineerWalletCreateNestedOneWithoutEngineerInput
 }
 
 export type EngineerUncheckedCreateInput = {
   id?: string
   name: string
   email: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   orgId: string
   profile?: Prisma.EngineerProfileUncheckedCreateNestedOneWithoutEngineerInput
+  wallet?: Prisma.EngineerWalletUncheckedCreateNestedOneWithoutEngineerInput
 }
 
 export type EngineerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.EngineerProfileUpdateOneWithoutEngineerNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutEngineersNestedInput
+  wallet?: Prisma.EngineerWalletUpdateOneWithoutEngineerNestedInput
 }
 
 export type EngineerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orgId?: Prisma.StringFieldUpdateOperationsInput | string
   profile?: Prisma.EngineerProfileUncheckedUpdateOneWithoutEngineerNestedInput
+  wallet?: Prisma.EngineerWalletUncheckedUpdateOneWithoutEngineerNestedInput
 }
 
 export type EngineerCreateManyInput = {
   id?: string
   name: string
   email: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   orgId: string
 }
 
@@ -296,6 +320,7 @@ export type EngineerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -304,6 +329,7 @@ export type EngineerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orgId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -313,6 +339,7 @@ export type EngineerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   orgId?: Prisma.SortOrder
@@ -322,6 +349,7 @@ export type EngineerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   orgId?: Prisma.SortOrder
@@ -331,6 +359,7 @@ export type EngineerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   orgId?: Prisma.SortOrder
@@ -407,22 +436,40 @@ export type EngineerUpdateOneRequiredWithoutProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EngineerUpdateToOneWithWhereWithoutProfileInput, Prisma.EngineerUpdateWithoutProfileInput>, Prisma.EngineerUncheckedUpdateWithoutProfileInput>
 }
 
+export type EngineerCreateNestedOneWithoutWalletInput = {
+  create?: Prisma.XOR<Prisma.EngineerCreateWithoutWalletInput, Prisma.EngineerUncheckedCreateWithoutWalletInput>
+  connectOrCreate?: Prisma.EngineerCreateOrConnectWithoutWalletInput
+  connect?: Prisma.EngineerWhereUniqueInput
+}
+
+export type EngineerUpdateOneRequiredWithoutWalletNestedInput = {
+  create?: Prisma.XOR<Prisma.EngineerCreateWithoutWalletInput, Prisma.EngineerUncheckedCreateWithoutWalletInput>
+  connectOrCreate?: Prisma.EngineerCreateOrConnectWithoutWalletInput
+  upsert?: Prisma.EngineerUpsertWithoutWalletInput
+  connect?: Prisma.EngineerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EngineerUpdateToOneWithWhereWithoutWalletInput, Prisma.EngineerUpdateWithoutWalletInput>, Prisma.EngineerUncheckedUpdateWithoutWalletInput>
+}
+
 export type EngineerCreateWithoutOrganizationInput = {
   id?: string
   name: string
   email: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   profile?: Prisma.EngineerProfileCreateNestedOneWithoutEngineerInput
+  wallet?: Prisma.EngineerWalletCreateNestedOneWithoutEngineerInput
 }
 
 export type EngineerUncheckedCreateWithoutOrganizationInput = {
   id?: string
   name: string
   email: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   profile?: Prisma.EngineerProfileUncheckedCreateNestedOneWithoutEngineerInput
+  wallet?: Prisma.EngineerWalletUncheckedCreateNestedOneWithoutEngineerInput
 }
 
 export type EngineerCreateOrConnectWithoutOrganizationInput = {
@@ -458,6 +505,7 @@ export type EngineerScalarWhereInput = {
   id?: Prisma.StringFilter<"Engineer"> | string
   name?: Prisma.StringFilter<"Engineer"> | string
   email?: Prisma.StringFilter<"Engineer"> | string
+  passwordHash?: Prisma.StringFilter<"Engineer"> | string
   createdAt?: Prisma.DateTimeFilter<"Engineer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Engineer"> | Date | string
   orgId?: Prisma.StringFilter<"Engineer"> | string
@@ -467,18 +515,22 @@ export type EngineerCreateWithoutProfileInput = {
   id?: string
   name: string
   email: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutEngineersInput
+  wallet?: Prisma.EngineerWalletCreateNestedOneWithoutEngineerInput
 }
 
 export type EngineerUncheckedCreateWithoutProfileInput = {
   id?: string
   name: string
   email: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   orgId: string
+  wallet?: Prisma.EngineerWalletUncheckedCreateNestedOneWithoutEngineerInput
 }
 
 export type EngineerCreateOrConnectWithoutProfileInput = {
@@ -501,50 +553,120 @@ export type EngineerUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutEngineersNestedInput
+  wallet?: Prisma.EngineerWalletUpdateOneWithoutEngineerNestedInput
 }
 
 export type EngineerUncheckedUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   orgId?: Prisma.StringFieldUpdateOperationsInput | string
+  wallet?: Prisma.EngineerWalletUncheckedUpdateOneWithoutEngineerNestedInput
+}
+
+export type EngineerCreateWithoutWalletInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.EngineerProfileCreateNestedOneWithoutEngineerInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutEngineersInput
+}
+
+export type EngineerUncheckedCreateWithoutWalletInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  orgId: string
+  profile?: Prisma.EngineerProfileUncheckedCreateNestedOneWithoutEngineerInput
+}
+
+export type EngineerCreateOrConnectWithoutWalletInput = {
+  where: Prisma.EngineerWhereUniqueInput
+  create: Prisma.XOR<Prisma.EngineerCreateWithoutWalletInput, Prisma.EngineerUncheckedCreateWithoutWalletInput>
+}
+
+export type EngineerUpsertWithoutWalletInput = {
+  update: Prisma.XOR<Prisma.EngineerUpdateWithoutWalletInput, Prisma.EngineerUncheckedUpdateWithoutWalletInput>
+  create: Prisma.XOR<Prisma.EngineerCreateWithoutWalletInput, Prisma.EngineerUncheckedCreateWithoutWalletInput>
+  where?: Prisma.EngineerWhereInput
+}
+
+export type EngineerUpdateToOneWithWhereWithoutWalletInput = {
+  where?: Prisma.EngineerWhereInput
+  data: Prisma.XOR<Prisma.EngineerUpdateWithoutWalletInput, Prisma.EngineerUncheckedUpdateWithoutWalletInput>
+}
+
+export type EngineerUpdateWithoutWalletInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.EngineerProfileUpdateOneWithoutEngineerNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEngineersNestedInput
+}
+
+export type EngineerUncheckedUpdateWithoutWalletInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orgId?: Prisma.StringFieldUpdateOperationsInput | string
+  profile?: Prisma.EngineerProfileUncheckedUpdateOneWithoutEngineerNestedInput
 }
 
 export type EngineerCreateManyOrganizationInput = {
   id?: string
   name: string
   email: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type EngineerUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.EngineerProfileUpdateOneWithoutEngineerNestedInput
+  wallet?: Prisma.EngineerWalletUpdateOneWithoutEngineerNestedInput
 }
 
 export type EngineerUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.EngineerProfileUncheckedUpdateOneWithoutEngineerNestedInput
+  wallet?: Prisma.EngineerWalletUncheckedUpdateOneWithoutEngineerNestedInput
 }
 
 export type EngineerUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -555,17 +677,20 @@ export type EngineerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   id?: boolean
   name?: boolean
   email?: boolean
+  passwordHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   orgId?: boolean
   profile?: boolean | Prisma.Engineer$profileArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  wallet?: boolean | Prisma.Engineer$walletArgs<ExtArgs>
 }, ExtArgs["result"]["engineer"]>
 
 export type EngineerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   email?: boolean
+  passwordHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   orgId?: boolean
@@ -576,6 +701,7 @@ export type EngineerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   name?: boolean
   email?: boolean
+  passwordHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   orgId?: boolean
@@ -586,15 +712,17 @@ export type EngineerSelectScalar = {
   id?: boolean
   name?: boolean
   email?: boolean
+  passwordHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   orgId?: boolean
 }
 
-export type EngineerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "createdAt" | "updatedAt" | "orgId", ExtArgs["result"]["engineer"]>
+export type EngineerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "createdAt" | "updatedAt" | "orgId", ExtArgs["result"]["engineer"]>
 export type EngineerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.Engineer$profileArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  wallet?: boolean | Prisma.Engineer$walletArgs<ExtArgs>
 }
 export type EngineerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -608,11 +736,13 @@ export type $EngineerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     profile: Prisma.$EngineerProfilePayload<ExtArgs> | null
     organization: Prisma.$OrganizationPayload<ExtArgs>
+    wallet: Prisma.$EngineerWalletPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     email: string
+    passwordHash: string
     createdAt: Date
     updatedAt: Date
     orgId: string
@@ -1012,6 +1142,7 @@ export interface Prisma__EngineerClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   profile<T extends Prisma.Engineer$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Engineer$profileArgs<ExtArgs>>): Prisma.Prisma__EngineerProfileClient<runtime.Types.Result.GetResult<Prisma.$EngineerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  wallet<T extends Prisma.Engineer$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Engineer$walletArgs<ExtArgs>>): Prisma.Prisma__EngineerWalletClient<runtime.Types.Result.GetResult<Prisma.$EngineerWalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1044,6 +1175,7 @@ export interface EngineerFieldRefs {
   readonly id: Prisma.FieldRef<"Engineer", 'String'>
   readonly name: Prisma.FieldRef<"Engineer", 'String'>
   readonly email: Prisma.FieldRef<"Engineer", 'String'>
+  readonly passwordHash: Prisma.FieldRef<"Engineer", 'String'>
   readonly createdAt: Prisma.FieldRef<"Engineer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Engineer", 'DateTime'>
   readonly orgId: Prisma.FieldRef<"Engineer", 'String'>
@@ -1459,6 +1591,25 @@ export type Engineer$profileArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.EngineerProfileInclude<ExtArgs> | null
   where?: Prisma.EngineerProfileWhereInput
+}
+
+/**
+ * Engineer.wallet
+ */
+export type Engineer$walletArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EngineerWallet
+   */
+  select?: Prisma.EngineerWalletSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EngineerWallet
+   */
+  omit?: Prisma.EngineerWalletOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EngineerWalletInclude<ExtArgs> | null
+  where?: Prisma.EngineerWalletWhereInput
 }
 
 /**

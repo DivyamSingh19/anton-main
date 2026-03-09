@@ -27,14 +27,14 @@ export type AggregateUserPlatforms = {
 export type UserPlatformsMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  platformName: string | null
+  platformName: $Enums.Integrations | null
   platformUserId: string | null
 }
 
 export type UserPlatformsMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  platformName: string | null
+  platformName: $Enums.Integrations | null
   platformUserId: string | null
 }
 
@@ -144,7 +144,7 @@ export type UserPlatformsGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type UserPlatformsGroupByOutputType = {
   id: string
   userId: string
-  platformName: string
+  platformName: $Enums.Integrations
   platformUserId: string
   _count: UserPlatformsCountAggregateOutputType | null
   _min: UserPlatformsMinAggregateOutputType | null
@@ -172,7 +172,7 @@ export type UserPlatformsWhereInput = {
   NOT?: Prisma.UserPlatformsWhereInput | Prisma.UserPlatformsWhereInput[]
   id?: Prisma.StringFilter<"UserPlatforms"> | string
   userId?: Prisma.StringFilter<"UserPlatforms"> | string
-  platformName?: Prisma.StringFilter<"UserPlatforms"> | string
+  platformName?: Prisma.EnumIntegrationsFilter<"UserPlatforms"> | $Enums.Integrations
   platformUserId?: Prisma.StringFilter<"UserPlatforms"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -191,7 +191,7 @@ export type UserPlatformsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.UserPlatformsWhereInput[]
   NOT?: Prisma.UserPlatformsWhereInput | Prisma.UserPlatformsWhereInput[]
   userId?: Prisma.StringFilter<"UserPlatforms"> | string
-  platformName?: Prisma.StringFilter<"UserPlatforms"> | string
+  platformName?: Prisma.EnumIntegrationsFilter<"UserPlatforms"> | $Enums.Integrations
   platformUserId?: Prisma.StringFilter<"UserPlatforms"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
@@ -212,13 +212,13 @@ export type UserPlatformsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserPlatformsScalarWhereWithAggregatesInput | Prisma.UserPlatformsScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"UserPlatforms"> | string
   userId?: Prisma.StringWithAggregatesFilter<"UserPlatforms"> | string
-  platformName?: Prisma.StringWithAggregatesFilter<"UserPlatforms"> | string
+  platformName?: Prisma.EnumIntegrationsWithAggregatesFilter<"UserPlatforms"> | $Enums.Integrations
   platformUserId?: Prisma.StringWithAggregatesFilter<"UserPlatforms"> | string
 }
 
 export type UserPlatformsCreateInput = {
   id?: string
-  platformName: string
+  platformName: $Enums.Integrations
   platformUserId: string
   user: Prisma.UserCreateNestedOneWithoutPlatformsInput
 }
@@ -226,13 +226,13 @@ export type UserPlatformsCreateInput = {
 export type UserPlatformsUncheckedCreateInput = {
   id?: string
   userId: string
-  platformName: string
+  platformName: $Enums.Integrations
   platformUserId: string
 }
 
 export type UserPlatformsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platformName?: Prisma.StringFieldUpdateOperationsInput | string
+  platformName?: Prisma.EnumIntegrationsFieldUpdateOperationsInput | $Enums.Integrations
   platformUserId?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutPlatformsNestedInput
 }
@@ -240,27 +240,27 @@ export type UserPlatformsUpdateInput = {
 export type UserPlatformsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  platformName?: Prisma.StringFieldUpdateOperationsInput | string
+  platformName?: Prisma.EnumIntegrationsFieldUpdateOperationsInput | $Enums.Integrations
   platformUserId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserPlatformsCreateManyInput = {
   id?: string
   userId: string
-  platformName: string
+  platformName: $Enums.Integrations
   platformUserId: string
 }
 
 export type UserPlatformsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platformName?: Prisma.StringFieldUpdateOperationsInput | string
+  platformName?: Prisma.EnumIntegrationsFieldUpdateOperationsInput | $Enums.Integrations
   platformUserId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserPlatformsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  platformName?: Prisma.StringFieldUpdateOperationsInput | string
+  platformName?: Prisma.EnumIntegrationsFieldUpdateOperationsInput | $Enums.Integrations
   platformUserId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -337,15 +337,19 @@ export type UserPlatformsUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.UserPlatformsScalarWhereInput | Prisma.UserPlatformsScalarWhereInput[]
 }
 
+export type EnumIntegrationsFieldUpdateOperationsInput = {
+  set?: $Enums.Integrations
+}
+
 export type UserPlatformsCreateWithoutUserInput = {
   id?: string
-  platformName: string
+  platformName: $Enums.Integrations
   platformUserId: string
 }
 
 export type UserPlatformsUncheckedCreateWithoutUserInput = {
   id?: string
-  platformName: string
+  platformName: $Enums.Integrations
   platformUserId: string
 }
 
@@ -381,31 +385,31 @@ export type UserPlatformsScalarWhereInput = {
   NOT?: Prisma.UserPlatformsScalarWhereInput | Prisma.UserPlatformsScalarWhereInput[]
   id?: Prisma.StringFilter<"UserPlatforms"> | string
   userId?: Prisma.StringFilter<"UserPlatforms"> | string
-  platformName?: Prisma.StringFilter<"UserPlatforms"> | string
+  platformName?: Prisma.EnumIntegrationsFilter<"UserPlatforms"> | $Enums.Integrations
   platformUserId?: Prisma.StringFilter<"UserPlatforms"> | string
 }
 
 export type UserPlatformsCreateManyUserInput = {
   id?: string
-  platformName: string
+  platformName: $Enums.Integrations
   platformUserId: string
 }
 
 export type UserPlatformsUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platformName?: Prisma.StringFieldUpdateOperationsInput | string
+  platformName?: Prisma.EnumIntegrationsFieldUpdateOperationsInput | $Enums.Integrations
   platformUserId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserPlatformsUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platformName?: Prisma.StringFieldUpdateOperationsInput | string
+  platformName?: Prisma.EnumIntegrationsFieldUpdateOperationsInput | $Enums.Integrations
   platformUserId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserPlatformsUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  platformName?: Prisma.StringFieldUpdateOperationsInput | string
+  platformName?: Prisma.EnumIntegrationsFieldUpdateOperationsInput | $Enums.Integrations
   platformUserId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -461,7 +465,7 @@ export type $UserPlatformsPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    platformName: string
+    platformName: $Enums.Integrations
     platformUserId: string
   }, ExtArgs["result"]["userPlatforms"]>
   composites: {}
@@ -889,7 +893,7 @@ export interface Prisma__UserPlatformsClient<T, Null = never, ExtArgs extends ru
 export interface UserPlatformsFieldRefs {
   readonly id: Prisma.FieldRef<"UserPlatforms", 'String'>
   readonly userId: Prisma.FieldRef<"UserPlatforms", 'String'>
-  readonly platformName: Prisma.FieldRef<"UserPlatforms", 'String'>
+  readonly platformName: Prisma.FieldRef<"UserPlatforms", 'Integrations'>
   readonly platformUserId: Prisma.FieldRef<"UserPlatforms", 'String'>
 }
     

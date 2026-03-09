@@ -231,8 +231,8 @@ export type UserSessionsScalarWhereWithAggregatesInput = {
 export type UserSessionsCreateInput = {
   id?: string
   lastLogin: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutSessionsInput
 }
 
@@ -240,8 +240,8 @@ export type UserSessionsUncheckedCreateInput = {
   id?: string
   userId?: string | null
   lastLogin: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type UserSessionsUpdateInput = {
@@ -264,8 +264,8 @@ export type UserSessionsCreateManyInput = {
   id?: string
   userId?: string | null
   lastLogin: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type UserSessionsUpdateManyMutationInput = {
@@ -359,10 +359,6 @@ export type UserSessionsUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.UserSessionsScalarWhereInput | Prisma.UserSessionsScalarWhereInput[]
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
@@ -370,15 +366,15 @@ export type NullableStringFieldUpdateOperationsInput = {
 export type UserSessionsCreateWithoutUserInput = {
   id?: string
   lastLogin: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type UserSessionsUncheckedCreateWithoutUserInput = {
   id?: string
   lastLogin: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type UserSessionsCreateOrConnectWithoutUserInput = {
@@ -421,8 +417,8 @@ export type UserSessionsScalarWhereInput = {
 export type UserSessionsCreateManyUserInput = {
   id?: string
   lastLogin: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type UserSessionsUpdateWithoutUserInput = {

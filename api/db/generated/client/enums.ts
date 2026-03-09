@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const Integrations = {
+  DISCORD: 'DISCORD',
+  SLACK: 'SLACK'
+} as const
+
+export type Integrations = (typeof Integrations)[keyof typeof Integrations]
+
+
 export const ProjectStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',

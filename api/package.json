@@ -21,6 +21,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "ethers": "^6.16.0",
@@ -29,6 +30,10 @@
     "jsonwebtoken": "^9.0.3",
     "kafkajs": "^2.2.4",
     "prisma": "^6.16.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.10"
   }
 }

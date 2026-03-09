@@ -67,3 +67,23 @@ export type EngineerProfile = Prisma.EngineerProfileModel
  * 
  */
 export type UserPlatforms = Prisma.UserPlatformsModel
+/**
+ * Model UserWallets
+ * 
+ */
+export type UserWallets = Prisma.UserWalletsModel
+/**
+ * Model EngineerWallet
+ * 
+ */
+export type EngineerWallet = Prisma.EngineerWalletModel
+/**
+ * Model OrganizationWallet
+ * 
+ */
+export type OrganizationWallet = Prisma.OrganizationWalletModel
+/**
+ * Model AdminWallet
+ * 
+ */
+export type AdminWallet = Prisma.AdminWalletModel

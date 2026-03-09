@@ -17,10 +17,10 @@ enum Integrations{
 
 model User{
   id String @id @default(uuid())
-  name String
+  username String @unique
   email String @unique
   passwordHash String 
-  createdAt String
+  createdAt DateTime @default(now())
   sessions UserSessions[]
   projects UserProject[]
   profile UserProfile?
@@ -33,16 +33,16 @@ model UserSessions{
   userId String?
   user   User?  @relation(fields: [userId],references: [id])
   lastLogin String
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 model Engineer{
   id String @id @default(uuid())
   name String
   email String @unique
   passwordHash String
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   orgId String
   profile EngineerProfile?
   organization Organization @relation(fields: [orgId],references: [id])
@@ -55,8 +55,8 @@ model Organization{
   name String
   email String @unique
   passwordHash String
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   engineers Engineer[]
   admins Admin[]
   wallet OrganizationWallet?
@@ -67,8 +67,8 @@ model Admin{
   name String
   email String @unique
   passwordHash String
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   orgId String
   profile AdminProfile?
   organization Organization @relation(fields: [orgId],references: [id])

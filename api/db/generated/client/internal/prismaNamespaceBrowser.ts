@@ -58,7 +58,11 @@ export const ModelName = {
   UserProfile: 'UserProfile',
   AdminProfile: 'AdminProfile',
   EngineerProfile: 'EngineerProfile',
-  UserPlatforms: 'UserPlatforms'
+  UserPlatforms: 'UserPlatforms',
+  UserWallets: 'UserWallets',
+  EngineerWallet: 'EngineerWallet',
+  OrganizationWallet: 'OrganizationWallet',
+  AdminWallet: 'AdminWallet'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -79,7 +83,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  username: 'username',
   email: 'email',
   passwordHash: 'passwordHash',
   createdAt: 'createdAt'
@@ -103,6 +107,7 @@ export const EngineerScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  passwordHash: 'passwordHash',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   orgId: 'orgId'
@@ -186,6 +191,50 @@ export const UserPlatformsScalarFieldEnum = {
 } as const
 
 export type UserPlatformsScalarFieldEnum = (typeof UserPlatformsScalarFieldEnum)[keyof typeof UserPlatformsScalarFieldEnum]
+
+
+export const UserWalletsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  walletAddress: 'walletAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserWalletsScalarFieldEnum = (typeof UserWalletsScalarFieldEnum)[keyof typeof UserWalletsScalarFieldEnum]
+
+
+export const EngineerWalletScalarFieldEnum = {
+  id: 'id',
+  engineerId: 'engineerId',
+  walletAddress: 'walletAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EngineerWalletScalarFieldEnum = (typeof EngineerWalletScalarFieldEnum)[keyof typeof EngineerWalletScalarFieldEnum]
+
+
+export const OrganizationWalletScalarFieldEnum = {
+  id: 'id',
+  orgId: 'orgId',
+  walletAddress: 'walletAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationWalletScalarFieldEnum = (typeof OrganizationWalletScalarFieldEnum)[keyof typeof OrganizationWalletScalarFieldEnum]
+
+
+export const AdminWalletScalarFieldEnum = {
+  id: 'id',
+  adminId: 'adminId',
+  walletAddress: 'walletAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminWalletScalarFieldEnum = (typeof AdminWalletScalarFieldEnum)[keyof typeof AdminWalletScalarFieldEnum]
 
 
 export const SortOrder = {

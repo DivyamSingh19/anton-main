@@ -26,23 +26,23 @@ export type AggregateUser = {
 
 export type UserMinAggregateOutputType = {
   id: string | null
-  name: string | null
+  username: string | null
   email: string | null
   passwordHash: string | null
-  createdAt: string | null
+  createdAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: string | null
-  name: string | null
+  username: string | null
   email: string | null
   passwordHash: string | null
-  createdAt: string | null
+  createdAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
-  name: number
+  username: number
   email: number
   passwordHash: number
   createdAt: number
@@ -52,7 +52,7 @@ export type UserCountAggregateOutputType = {
 
 export type UserMinAggregateInputType = {
   id?: true
-  name?: true
+  username?: true
   email?: true
   passwordHash?: true
   createdAt?: true
@@ -60,7 +60,7 @@ export type UserMinAggregateInputType = {
 
 export type UserMaxAggregateInputType = {
   id?: true
-  name?: true
+  username?: true
   email?: true
   passwordHash?: true
   createdAt?: true
@@ -68,7 +68,7 @@ export type UserMaxAggregateInputType = {
 
 export type UserCountAggregateInputType = {
   id?: true
-  name?: true
+  username?: true
   email?: true
   passwordHash?: true
   createdAt?: true
@@ -149,10 +149,10 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type UserGroupByOutputType = {
   id: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt: Date
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -178,19 +178,20 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
-  name?: Prisma.StringFilter<"User"> | string
+  username?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
-  createdAt?: Prisma.StringFilter<"User"> | string
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.UserSessionsListRelationFilter
   projects?: Prisma.UserProjectListRelationFilter
   profile?: Prisma.XOR<Prisma.UserProfileNullableScalarRelationFilter, Prisma.UserProfileWhereInput> | null
   platforms?: Prisma.UserPlatformsListRelationFilter
+  wallet?: Prisma.XOR<Prisma.UserWalletsNullableScalarRelationFilter, Prisma.UserWalletsWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -198,26 +199,28 @@ export type UserOrderByWithRelationInput = {
   projects?: Prisma.UserProjectOrderByRelationAggregateInput
   profile?: Prisma.UserProfileOrderByWithRelationInput
   platforms?: Prisma.UserPlatformsOrderByRelationAggregateInput
+  wallet?: Prisma.UserWalletsOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  username?: string
   email?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
-  name?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
-  createdAt?: Prisma.StringFilter<"User"> | string
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.UserSessionsListRelationFilter
   projects?: Prisma.UserProjectListRelationFilter
   profile?: Prisma.XOR<Prisma.UserProfileNullableScalarRelationFilter, Prisma.UserProfileWhereInput> | null
   platforms?: Prisma.UserPlatformsListRelationFilter
-}, "id" | "email">
+  wallet?: Prisma.XOR<Prisma.UserWalletsNullableScalarRelationFilter, Prisma.UserWalletsWhereInput> | null
+}, "id" | "username" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -231,87 +234,91 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
-  name?: Prisma.StringWithAggregatesFilter<"User"> | string
+  username?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
-  createdAt?: Prisma.StringWithAggregatesFilter<"User"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
 export type UserCreateInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   sessions?: Prisma.UserSessionsCreateNestedManyWithoutUserInput
   projects?: Prisma.UserProjectCreateNestedManyWithoutUserInput
   profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
   platforms?: Prisma.UserPlatformsCreateNestedManyWithoutUserInput
+  wallet?: Prisma.UserWalletsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   sessions?: Prisma.UserSessionsUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.UserProjectUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
   platforms?: Prisma.UserPlatformsUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.UserWalletsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.UserSessionsUpdateManyWithoutUserNestedInput
   projects?: Prisma.UserProjectUpdateManyWithoutUserNestedInput
   profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
   platforms?: Prisma.UserPlatformsUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.UserSessionsUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.UserProjectUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
   platforms?: Prisma.UserPlatformsUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
 }
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -319,7 +326,7 @@ export type UserCountOrderByAggregateInput = {
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -327,7 +334,7 @@ export type UserMaxOrderByAggregateInput = {
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -345,6 +352,10 @@ export type UserScalarRelationFilter = {
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -405,26 +416,42 @@ export type UserUpdateOneRequiredWithoutPlatformsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPlatformsInput, Prisma.UserUpdateWithoutPlatformsInput>, Prisma.UserUncheckedUpdateWithoutPlatformsInput>
 }
 
+export type UserCreateNestedOneWithoutWalletInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWalletInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWalletNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWalletInput
+  upsert?: Prisma.UserUpsertWithoutWalletInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWalletInput, Prisma.UserUpdateWithoutWalletInput>, Prisma.UserUncheckedUpdateWithoutWalletInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   projects?: Prisma.UserProjectCreateNestedManyWithoutUserInput
   profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
   platforms?: Prisma.UserPlatformsCreateNestedManyWithoutUserInput
+  wallet?: Prisma.UserWalletsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   projects?: Prisma.UserProjectUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
   platforms?: Prisma.UserPlatformsUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.UserWalletsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -445,46 +472,50 @@ export type UserUpdateToOneWithWhereWithoutSessionsInput = {
 
 export type UserUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.UserProjectUpdateManyWithoutUserNestedInput
   profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
   platforms?: Prisma.UserPlatformsUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.UserProjectUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
   platforms?: Prisma.UserPlatformsUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProjectsInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   sessions?: Prisma.UserSessionsCreateNestedManyWithoutUserInput
   profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
   platforms?: Prisma.UserPlatformsCreateNestedManyWithoutUserInput
+  wallet?: Prisma.UserWalletsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProjectsInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   sessions?: Prisma.UserSessionsUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
   platforms?: Prisma.UserPlatformsUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.UserWalletsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProjectsInput = {
@@ -505,46 +536,50 @@ export type UserUpdateToOneWithWhereWithoutProjectsInput = {
 
 export type UserUpdateWithoutProjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.UserSessionsUpdateManyWithoutUserNestedInput
   profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
   platforms?: Prisma.UserPlatformsUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.UserSessionsUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
   platforms?: Prisma.UserPlatformsUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   sessions?: Prisma.UserSessionsCreateNestedManyWithoutUserInput
   projects?: Prisma.UserProjectCreateNestedManyWithoutUserInput
   platforms?: Prisma.UserPlatformsCreateNestedManyWithoutUserInput
+  wallet?: Prisma.UserWalletsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   sessions?: Prisma.UserSessionsUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.UserProjectUncheckedCreateNestedManyWithoutUserInput
   platforms?: Prisma.UserPlatformsUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.UserWalletsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -565,46 +600,50 @@ export type UserUpdateToOneWithWhereWithoutProfileInput = {
 
 export type UserUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.UserSessionsUpdateManyWithoutUserNestedInput
   projects?: Prisma.UserProjectUpdateManyWithoutUserNestedInput
   platforms?: Prisma.UserPlatformsUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.UserSessionsUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.UserProjectUncheckedUpdateManyWithoutUserNestedInput
   platforms?: Prisma.UserPlatformsUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPlatformsInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   sessions?: Prisma.UserSessionsCreateNestedManyWithoutUserInput
   projects?: Prisma.UserProjectCreateNestedManyWithoutUserInput
   profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.UserWalletsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPlatformsInput = {
   id?: string
-  name: string
+  username: string
   email: string
   passwordHash: string
-  createdAt: string
+  createdAt?: Date | string
   sessions?: Prisma.UserSessionsUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.UserProjectUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.UserWalletsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPlatformsInput = {
@@ -625,24 +664,90 @@ export type UserUpdateToOneWithWhereWithoutPlatformsInput = {
 
 export type UserUpdateWithoutPlatformsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.UserSessionsUpdateManyWithoutUserNestedInput
   projects?: Prisma.UserProjectUpdateManyWithoutUserNestedInput
   profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPlatformsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.UserSessionsUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.UserProjectUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.UserWalletsUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWalletInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  sessions?: Prisma.UserSessionsCreateNestedManyWithoutUserInput
+  projects?: Prisma.UserProjectCreateNestedManyWithoutUserInput
+  profile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  platforms?: Prisma.UserPlatformsCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWalletInput = {
+  id?: string
+  username: string
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  sessions?: Prisma.UserSessionsUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.UserProjectUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  platforms?: Prisma.UserPlatformsUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWalletInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+}
+
+export type UserUpsertWithoutWalletInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWalletInput, Prisma.UserUncheckedUpdateWithoutWalletInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWalletInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWalletInput, Prisma.UserUncheckedUpdateWithoutWalletInput>
+}
+
+export type UserUpdateWithoutWalletInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.UserSessionsUpdateManyWithoutUserNestedInput
+  projects?: Prisma.UserProjectUpdateManyWithoutUserNestedInput
+  profile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  platforms?: Prisma.UserPlatformsUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWalletInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.UserSessionsUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.UserProjectUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  platforms?: Prisma.UserPlatformsUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -696,7 +801,7 @@ export type UserCountOutputTypeCountPlatformsArgs<ExtArgs extends runtime.Types.
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
+  username?: boolean
   email?: boolean
   passwordHash?: boolean
   createdAt?: boolean
@@ -704,12 +809,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   platforms?: boolean | Prisma.User$platformsArgs<ExtArgs>
+  wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
+  username?: boolean
   email?: boolean
   passwordHash?: boolean
   createdAt?: boolean
@@ -717,7 +823,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
+  username?: boolean
   email?: boolean
   passwordHash?: boolean
   createdAt?: boolean
@@ -725,18 +831,19 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type UserSelectScalar = {
   id?: boolean
-  name?: boolean
+  username?: boolean
   email?: boolean
   passwordHash?: boolean
   createdAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "createdAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "passwordHash" | "createdAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   platforms?: boolean | Prisma.User$platformsArgs<ExtArgs>
+  wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -749,13 +856,14 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     projects: Prisma.$UserProjectPayload<ExtArgs>[]
     profile: Prisma.$UserProfilePayload<ExtArgs> | null
     platforms: Prisma.$UserPlatformsPayload<ExtArgs>[]
+    wallet: Prisma.$UserWalletsPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    name: string
+    username: string
     email: string
     passwordHash: string
-    createdAt: string
+    createdAt: Date
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1154,6 +1262,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   projects<T extends Prisma.User$projectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   profile<T extends Prisma.User$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileArgs<ExtArgs>>): Prisma.Prisma__UserProfileClient<runtime.Types.Result.GetResult<Prisma.$UserProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   platforms<T extends Prisma.User$platformsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$platformsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPlatformsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  wallet<T extends Prisma.User$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$walletArgs<ExtArgs>>): Prisma.Prisma__UserWalletsClient<runtime.Types.Result.GetResult<Prisma.$UserWalletsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1184,10 +1293,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
-  readonly name: Prisma.FieldRef<"User", 'String'>
+  readonly username: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
-  readonly createdAt: Prisma.FieldRef<"User", 'String'>
+  readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 
@@ -1664,6 +1773,25 @@ export type User$platformsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.UserPlatformsScalarFieldEnum | Prisma.UserPlatformsScalarFieldEnum[]
+}
+
+/**
+ * User.wallet
+ */
+export type User$walletArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserWallets
+   */
+  select?: Prisma.UserWalletsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserWallets
+   */
+  omit?: Prisma.UserWalletsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserWalletsInclude<ExtArgs> | null
+  where?: Prisma.UserWalletsWhereInput
 }
 
 /**
