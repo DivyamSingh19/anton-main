@@ -12,6 +12,7 @@
     "mongo": "^0.1.0",
     "mongoose": "^9.2.4",
     "typescript": "^5.9.3",
+    "winston": "^3.19.0",
     "ws": "^8.19.0"
   },
   "devDependencies": {
