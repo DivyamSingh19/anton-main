@@ -19,6 +19,7 @@ const adminProfileSchema = z.object({
     .string()
     .min(20, "Bio can not be less than 20 characters")
     .max(500, "Bio can not be more than 500 characters"),
+  headline : z.string().min(10,"headline can not be less than 10 characters").max(25,"Head line can not be")
 });
 
 const organizationProfileSchema = z.object({
