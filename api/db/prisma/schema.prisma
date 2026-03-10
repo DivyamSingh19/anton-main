@@ -5,216 +5,228 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
-enum Integrations{
+enum Integrations {
   DISCORD
   SLACK
   TELEGRAM
 }
 
-model User{
-  id String @id @default(uuid())
-  username String @unique
-  email String @unique
-  passwordHash String 
-  createdAt DateTime @default(now())
-  sessions UserSessions[]
-  projects UserProject[]                      
-  profile UserProfile?
-  platforms UserPlatforms[]
-  wallet UserWallets?
+model User {
+  id           String          @id @default(uuid())
+  username     String          @unique
+  email        String          @unique
+  passwordHash String
+  createdAt    DateTime        @default(now())
+  sessions     UserSessions[]
+  projects     UserProject[]
+  profile      UserProfile?
+  platforms    UserPlatforms[]
+  wallet       UserWallets?
 }
 
-model UserSessions{
-  id String @id @default(uuid())
-  userId String
-  user   User  @relation(fields: [userId],references: [id])
-  lastLogin DateTime
-  sessionToken String @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model UserSessions {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  lastLogin    DateTime
+  sessionToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([userId])
 }
-model Engineer{
-  id String @id @default(uuid())
-  name String
-  email String @unique
+
+model Engineer {
+  id           String             @id @default(uuid())
+  name         String
+  email        String             @unique
   passwordHash String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orgId String
-  profile EngineerProfile?
-  organization Organization @relation(fields: [orgId],references: [id])
-  wallet    EngineerWallet?
-  sessions  EngineerSessions[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  orgId        String
+  profile      EngineerProfile?
+  organization Organization       @relation(fields: [orgId], references: [id])
+  wallet       EngineerWallet?
+  sessions     EngineerSessions[]
+
   @@index([id])
 }
 
-model EngineerSessions{
-  id String @id @default(uuid())
-  engineerId String
-  engineer   Engineer  @relation(fields: [engineerId],references: [id])
-  lastLogin DateTime
-  sessionToken String @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model EngineerSessions {
+  id           String   @id @default(uuid())
+  engineerId   String
+  engineer     Engineer @relation(fields: [engineerId], references: [id])
+  lastLogin    DateTime
+  sessionToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([engineerId])
 }
 
-model Organization{
-  id String @id @default(uuid())
-  name String
-  email String @unique
+model Organization {
+  id           String                 @id @default(uuid())
+  name         String
+  email        String                 @unique
   passwordHash String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  engineers Engineer[]
-  admins Admin[]
-  wallet OrganizationWallet?
-  sessions  OrganizationSessions[]
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  engineers    Engineer[]
+  admins       Admin[]
+  wallet       OrganizationWallet?
+  sessions     OrganizationSessions[]
+
   @@index([id])
 }
-model OrganizationSessions{
-  id  String @id @default(uuid())
+
+model OrganizationSessions {
+  id             String       @id @default(uuid())
   organizationId String
-  organization   Organization  @relation(fields: [organizationId],references: [id])
-  lastLogin DateTime
-  sessionToken String @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  lastLogin      DateTime
+  sessionToken   String       @unique
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   @@index([organizationId])
 }
-model Admin{
-  id String @id @default(uuid())
-  name String
-  email String @unique
+
+model Admin {
+  id           String          @id @default(uuid())
+  name         String
+  email        String          @unique
   passwordHash String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orgId String
-  profile AdminProfile?
-  organization Organization @relation(fields: [orgId],references: [id])
-  wallet AdminWallet?
-  sessions  AdminSessions[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  orgId        String
+  profile      AdminProfile?
+  organization Organization    @relation(fields: [orgId], references: [id])
+  wallet       AdminWallet?
+  sessions     AdminSessions[]
 
   @@index([id])
 }
-model AdminSessions{
-  id  String @id @default(uuid())
-  adminId String
-  admin   Admin  @relation(fields: [adminId],references: [id])
-  lastLogin DateTime
-  sessionToken String @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+model AdminSessions {
+  id           String   @id @default(uuid())
+  adminId      String
+  admin        Admin    @relation(fields: [adminId], references: [id])
+  lastLogin    DateTime
+  sessionToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([adminId])
 }
-model UserProject{
-  id String @id @default(uuid())
-  userId String
-  projectId String
-  user User @relation(fields: [userId],references: [id])
-  status ProjectStatus
-  description String?
-  name String
 
-  
+model UserProject {
+  id          String        @id @default(uuid())
+  userId      String
+  projectId   String
+  user        User          @relation(fields: [userId], references: [id])
+  status      ProjectStatus
+  description String?
+  name        String
 }
 
-enum ProjectStatus{
+enum ProjectStatus {
   ACTIVE
   INACTIVE
   ARCHIVED
 }
 
-model UserProfile{
-  id String @id @default(uuid())
-  userId String @unique
-  user User @relation(fields: [userId],references: [id])
-  bio String?
+model UserProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  bio       String?
   avatarUrl String?
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model AdminProfile{
-  id String @id @default(uuid())
-  adminId String @unique
-  admin Admin @relation(fields: [adminId],references: [id])
-  bio String?
+model AdminProfile {
+  id        String   @id @default(uuid())
+  adminId   String   @unique
+  admin     Admin    @relation(fields: [adminId], references: [id])
+  bio       String?
   avatarUrl String?
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model EngineerProfile{
-  id String @id @default(uuid())
-  engineerId String @unique
-  engineer Engineer @relation(fields: [engineerId],references: [id])
-  bio String?
-  avatarUrl String?
-
+model EngineerProfile {
+  id         String   @id @default(uuid())
+  engineerId String   @unique
+  engineer   Engineer @relation(fields: [engineerId], references: [id])
+  bio        String?
+  avatarUrl  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
-model UserPlatforms{
-  id String @id @default(uuid())
-  userId String
-  platformName Integrations
+model UserPlatforms {
+  id             String       @id @default(uuid())
+  userId         String
+  platformName   Integrations
   platformUserId String
-  user User @relation(fields: [userId],references: [id])
+  user           User         @relation(fields: [userId], references: [id])
 }
 
 //wallets
-model UserWallets{
-  id  String @default(uuid()) @id
-  userId String @unique
-  user User @relation(fields: [userId],references: [id])
-  walletAddress String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model UserWallets {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  walletAddress String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
   @@index([id])
 }
 
-model EngineerWallet{
-  id  String @default(uuid()) @id
-  engineerId String @unique
-  engineer Engineer @relation(fields: [engineerId],references: [id])
-  walletAddress String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model EngineerWallet {
+  id            String   @id @default(uuid())
+  engineerId    String   @unique
+  engineer      Engineer @relation(fields: [engineerId], references: [id])
+  walletAddress String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
   @@index([id])
 }
 
-model OrganizationWallet{
-  id  String @default(uuid()) @id
-  orgId String @unique
-  organization Organization @relation(fields: [orgId],references: [id])
-  walletAddress String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model OrganizationWallet {
+  id            String       @id @default(uuid())
+  orgId         String       @unique
+  organization  Organization @relation(fields: [orgId], references: [id])
+  walletAddress String       @unique
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
   @@index([id])
 }
 
-model AdminWallet{
-  id  String @default(uuid()) @id
-  adminId String @unique
-  admin Admin @relation(fields: [adminId],references: [id])
+model AdminWallet {
+  id            String   @id @default(uuid())
+  adminId       String   @unique
+  admin         Admin    @relation(fields: [adminId], references: [id])
   walletAddress String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
   @@index([id])
 }
 
-model ContractFingerPrint{
-  id String @id @default(uuid())
+model ContractFingerPrint {
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

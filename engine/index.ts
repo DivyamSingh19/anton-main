@@ -1,1 +1,1 @@
-//main engine to handle kill switch execution
+//main engine to handle kill switch executions
