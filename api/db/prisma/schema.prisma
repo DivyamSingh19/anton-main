@@ -8,33 +8,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Integrations {
-  DISCORD
-  SLACK
-  TELEGRAM
-}
-
 enum ProfileStatus{
    INITIALIZED
    COMPLETED
    SKIPPED
 }
-enum LoginMethod{
-  Auth
-  OAuth
-}
+ 
 model User {
   id           String          @id @default(uuid())
   username     String          @unique
   email        String          @unique
   passwordHash String
   createdAt    DateTime        @default(now())
-  profileStatus ProfileStatus
-  loginMethod  LoginMethod
+  profileStatus ProfileStatus @default(SKIPPED)
   sessions     UserSessions[]
   projects     UserProject[]
   profile      UserProfile?
-  platforms    UserPlatforms[]
+  platforms    UserWebHooks[]
   wallet       UserWallets?
 }
 
@@ -50,6 +40,96 @@ model UserSessions {
 
   @@index([userId])
 }
+
+model UserProject {
+  id          String        @id @default(uuid())
+  userId      String
+  projectId   String
+  user        User          @relation(fields: [userId], references: [id])
+  status      ProjectStatus
+  description String?
+  name        String
+}
+
+enum ProjectStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+model UserProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  bio       String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserWebHooks {
+  id             String       @id @default(uuid())
+  userId         String
+  slackurl      String?   @unique
+  discordUrl    String?   @unique
+  user           User         @relation(fields: [userId], references: [id])
+}
+
+//wallets
+model UserWallets {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  walletAddress String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([id])
+}
+
+
+
+model ContractFingerPrint {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 model Engineer {
   id           String             @id @default(uuid())
@@ -137,73 +217,7 @@ model AdminSessions {
   @@index([adminId])
 }
 
-model UserProject {
-  id          String        @id @default(uuid())
-  userId      String
-  projectId   String
-  user        User          @relation(fields: [userId], references: [id])
-  status      ProjectStatus
-  description String?
-  name        String
-}
 
-enum ProjectStatus {
-  ACTIVE
-  INACTIVE
-  ARCHIVED
-}
-
-model UserProfile {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
-  bio       String?
-  avatarUrl String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model AdminProfile {
-  id        String   @id @default(uuid())
-  adminId   String   @unique
-  admin     Admin    @relation(fields: [adminId], references: [id])
-  bio       String?
-  displayName String?
-  headline    String?
-  avatarUrl String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model EngineerProfile {
-  id         String   @id @default(uuid())
-  engineerId String   @unique
-  engineer   Engineer @relation(fields: [engineerId], references: [id])
-  bio        String?
-  avatarUrl  String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model UserPlatforms {
-  id             String       @id @default(uuid())
-  userId         String
-  platformName   Integrations
-  platformUserId String
-  user           User         @relation(fields: [userId], references: [id])
-}
-
-//wallets
-model UserWallets {
-  id            String   @id @default(uuid())
-  userId        String   @unique
-  user          User     @relation(fields: [userId], references: [id])
-  walletAddress String   @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  @@index([id])
-}
 
 model EngineerWallet {
   id            String   @id @default(uuid())
@@ -238,8 +252,25 @@ model AdminWallet {
   @@index([id])
 }
 
-model ContractFingerPrint {
+
+model AdminProfile {
   id        String   @id @default(uuid())
+  adminId   String   @unique
+  admin     Admin    @relation(fields: [adminId], references: [id])
+  bio       String?
+  displayName String?
+  headline    String?
+  avatarUrl String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model EngineerProfile {
+  id         String   @id @default(uuid())
+  engineerId String   @unique
+  engineer   Engineer @relation(fields: [engineerId], references: [id])
+  bio        String?
+  avatarUrl  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
