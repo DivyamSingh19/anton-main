@@ -7,12 +7,12 @@ import { AuthService } from "../../services/user/auth.service";
 import { SessionService } from "../../services/user/session.service";
 
 export class AuthController {
-    private userService : AuthService
-    private sessionService : SessionService
-    constructor(){
-        this.userService= new AuthService
-        this.sessionService = new SessionService
-    }
+  private userService: AuthService
+  private sessionService: SessionService
+  constructor() {
+    this.userService = new AuthService
+    this.sessionService = new SessionService
+  }
   register = async (req: Request, res: Response) => {
     try {
       const validation = newUserSchema.safeParse(req.body);
@@ -51,10 +51,16 @@ export class AuthController {
         },
       });
       const token = await createToken(newUser.id);
+
+      // Create session in database
+      await this.sessionService.createSession(newUser.id, token);
+
       res.cookie("user_auth_token", token, {
         httpOnly: true,
-        sameSite: false,
-        secure: true,
+        sameSite: 'lax',
+        secure: false, // Set to false for localhost
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
       });
       return res.status(HTTPStatus.Created).json({
         success: true,
@@ -100,17 +106,23 @@ export class AuthController {
         email: checkUser.email,
         username: checkUser.username,
       };
-      const token = createToken(data.id);
+      const token = await createToken(data.id);
+
+      // Create session in database
+      await this.sessionService.createSession(data.id, token);
+
       res.cookie("user_auth_token", token, {
         httpOnly: true,
-        sameSite: false,
-        secure: true,
+        sameSite: 'lax',
+        secure: false, // Set to false for localhost
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
       });
       return res.status(HTTPStatus.Success).json({
-        success:true,
-        message:"Login successful",
-        token:token,
-        data:data
+        success: true,
+        message: "Login successful",
+        token: token,
+        data: data
       })
     } catch (error) {
       return res.status(HTTPStatus.InternalError).json({
@@ -121,20 +133,27 @@ export class AuthController {
   };
   logout = async (req: Request, res: Response) => {
     try {
-      const userId = req.userId
-      if(!userId){
-        return res.status(HTTPStatus.BadRequest).json({
-          success:false,
-          message:"Bad request login first"
-        })
+      const token = req.cookies?.user_auth_token || req.headers.authorization?.split(' ')[1];
+
+      if (token) {
+        try {
+          await this.sessionService.invalidateSession(token);
+        } catch (error) {
+          console.error("Could not invalidate session in DB", error);
+        }
       }
-      const user = this.userService.findUserFromId(userId) 
-      if(!user){
-        return res.status(HTTPStatus.Notfound).json({
-          messsage:"User not found"
-        })
-      }
-      
+
+      res.clearCookie("user_auth_token", {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: false
+      });
+
+      return res.status(HTTPStatus.Success).json({
+        success: true,
+        message: "Logged out successfully"
+      });
     } catch (error) {
       return res.status(HTTPStatus.InternalError).json({
         success: false,
@@ -144,27 +163,27 @@ export class AuthController {
   };
   me = async (req: Request, res: Response) => {
     try {
-        const userId = req.userId
-        if(!userId){
-          return res.status(HTTPStatus.Unauthorized).json({
-            success:false,
-            message:"Could not find user"
-          })
-        }
-        const user = await this.userService.findUserFromId(userId)
-        if(!user){
-          return res.status(HTTPStatus.Notfound).json({
-            success:false,
-            message:"User not found"
-          })
-        }
-        return res.status(HTTPStatus.Success).json({
-          success:true,
-          data:{
-            email:user.email,
-            username:user.username,
-          }
+      const userId = req.userId
+      if (!userId) {
+        return res.status(HTTPStatus.Unauthorized).json({
+          success: false,
+          message: "Could not find user"
         })
+      }
+      const user = await this.userService.findUserFromId(userId)
+      if (!user) {
+        return res.status(HTTPStatus.Notfound).json({
+          success: false,
+          message: "User not found"
+        })
+      }
+      return res.status(HTTPStatus.Success).json({
+        success: true,
+        data: {
+          email: user.email,
+          username: user.username,
+        }
+      })
     } catch (error) {
       return res.status(HTTPStatus.InternalError).json({
         success: false,
