@@ -73,6 +73,11 @@ model UserWebHooks {
   slackurl      String?   @unique
   discordUrl    String?   @unique
   user           User         @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId,slackurl])
+  @@index([userId,discordUrl])
 }
 
 //wallets
