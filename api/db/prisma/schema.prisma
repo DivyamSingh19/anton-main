@@ -14,12 +14,23 @@ enum Integrations {
   TELEGRAM
 }
 
+enum ProfileStatus{
+   INITIALIZED
+   COMPLETED
+   SKIPPED
+}
+enum LoginMethod{
+  Auth
+  OAuth
+}
 model User {
   id           String          @id @default(uuid())
   username     String          @unique
   email        String          @unique
   passwordHash String
   createdAt    DateTime        @default(now())
+  profileStatus ProfileStatus
+  loginMethod  LoginMethod
   sessions     UserSessions[]
   projects     UserProject[]
   profile      UserProfile?

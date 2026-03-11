@@ -1,5 +1,6 @@
-import { AuthController } from "../../controllers/user/auth";
+import { AuthController } from "../controllers/user/auth";
 import express,{Request,Response,NextFunction} from "express"
+import { userAuthMiddleware } from "../middlewares/auth/user";
 
 
 const auth = new AuthController()
@@ -29,7 +30,7 @@ userAuth.post("/logout",async (req:Request,res:Response,next:NextFunction) => {
     }
 })
 
-userAuth.get("/me",async (req:Request,res:Response,next:NextFunction) => {
+userAuth.get("/me",userAuthMiddleware,async (req:Request,res:Response,next:NextFunction) => {
     try {
         auth.me(req,res)
     } catch (error) {
@@ -37,4 +38,4 @@ userAuth.get("/me",async (req:Request,res:Response,next:NextFunction) => {
     }
 })
 
-export default userAuth
+export default userAuth 
