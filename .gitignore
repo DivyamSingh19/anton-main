@@ -6,3 +6,6 @@ logs
 cache
 .vscode
 generated
+secrets
+
+arch.txt
