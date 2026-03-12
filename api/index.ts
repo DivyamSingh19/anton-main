@@ -2,8 +2,10 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-import userAuth from "./routes/user/auth"
+import userAuth from "./routes/auth"
 import connectDB from "./config/mongo"
+import { dataLength } from "ethers"
+import dataRouter from "./routes/data"
 
 const app = express()
 
@@ -26,10 +28,6 @@ declare global{
     }
 }
 
-//admin routes
-
-
-
 
 
 //user routes
@@ -39,13 +37,13 @@ declare global{
 
 
 
-//engieer routes
+    //data 
+    app.use("/api/user/data",dataRouter)
 
 
 
 
-
-//organization routes
+    //wallet
 
 
 

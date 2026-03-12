@@ -17,7 +17,7 @@ const startWorker = async (consumer: any, producer: any): Promise<void> => {
 
 const processWebhookJob = async (job: any, mqProducer: any): Promise<void> => {
 
-    const { webhookUrl, message, jobId } = job  // ✅ moved outside try so catch can access jobId
+    const { webhookUrl, message, jobId } = job  
 
     try {
         // send alert
