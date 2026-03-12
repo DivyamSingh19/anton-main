@@ -104,17 +104,23 @@ model Contracts {
   id        String       @id @default(uuid())
   projectId String       @unique
   projects  UserProjects @relation(fields: [projectId], references: [id])
+  attacks   ContractAttack[]
   updatedAt DateTime     @updatedAt
   createdAt DateTime     @default(now())
 }
 
-
-
-
-
-
-
-
+model ContractAttack{
+  id    String  @id @default(uuid())
+  description String
+  startedAt   DateTime
+  actionTaken String
+  alertsGenerated String
+  contractId  String
+  contract    Contracts @relation(fields: [contractId],references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([contractId])
+}
 
 
 
