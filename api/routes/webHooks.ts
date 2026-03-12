@@ -53,3 +53,5 @@ webhookRouter.put("/slack",userAuthMiddleware,async (req:Request,res:Response,ne
         next()
     }
 })
+
+export default webhookRouter
