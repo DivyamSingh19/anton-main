@@ -21,7 +21,7 @@ projectRouter.get("/all",userAuthMiddleware,async (req:Request,res:Response,next
     }
 })
 
-projectRouter.get("/:id",userAuthMiddleware,async (req:Request,res:Response,next:NextFunction) => {
+projectRouter.post("/:id",userAuthMiddleware,async (req:Request,res:Response,next:NextFunction) => {
     try {
         controller.id(req,res)
     } catch (error) {
