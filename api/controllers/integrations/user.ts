@@ -339,5 +339,22 @@ export class WebhookController {
         message: (error as Error).message,
       });
     }
+    
   };
+   userwebhooks = async (req:Request,res:Response) => {
+      try {
+          const userId = req.userId
+          if(!userId){
+            return res.status(HTTPStatus.Unauthorized).json({
+                success:false,
+                message:"User not authorized"
+            })
+          }
+      } catch (error) {
+        return res.status(HTTPStatus.InternalError).json({
+            success:false,
+            message:(error as Error).message
+        })
+      }
+    }
 }
