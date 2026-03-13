@@ -77,10 +77,24 @@ const processWebhookJob = async (job: any): Promise<void> => {
     const { webhookUrl, message, jobId } = job
 
     try {
-        await axios.post(webhookUrl, { text: message })
+        await axios.post(webhookUrl, {
+            username: "Kaizen Sentinel",
+            embeds: [
+                {
+                    title: "🚨 Threat Detected",
+                    description: message,
+                    color: 15158332,
+                    timestamp: new Date().toISOString()
+                }
+            ]
+        })
         console.log(`Webhook sent successfully to ${webhookUrl}`)
     } catch (err: any) {
-        console.error(`Webhook failed for ${webhookUrl}`, err.message)
+        if (err.response?.data) {
+             console.error(`Webhook failed for ${webhookUrl} - Discord Error:`, JSON.stringify(err.response.data));
+        } else {
+             console.error(`Webhook failed for ${webhookUrl}`, err.message);
+        }
     }
 }
 
