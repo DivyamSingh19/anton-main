@@ -1,7 +1,8 @@
 import { WebhookController } from "../controllers/integrations/user";
 import express,{Request,Response,NextFunction}from "express"
 import { userAuthMiddleware } from "../middlewares/auth/user";
-
+import { kafka, pushThreatAlert } from "../kafka/config";
+import { producer } from "../kafka/consumer";
 
 const webhookRouter = express.Router()
 const controller = new WebhookController()
@@ -61,4 +62,19 @@ webhookRouter.get("/all",userAuthMiddleware,async (req:Request,res:Response,next
         next()
     }
 })
+
+webhookRouter.post("/mock-webhook", async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const { webhookUrl, message } = req.body;
+        const targetUrl = webhookUrl || "https://httpbin.org/post";
+        const targetMessage = message || "Mock Threat Alert from Kaizen";
+        await producer.connect()
+        await pushThreatAlert(targetUrl, targetMessage);
+        
+        res.status(200).json({ success: true, message: "Mock webhook queued" });
+    } catch (error) {
+        next(error);
+    }
+});
+
 export default webhookRouter

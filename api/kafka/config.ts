@@ -1,28 +1,60 @@
-import { Kafka } from "kafkajs";
+import { Kafka, Producer } from "kafkajs";
 
 export const kafka = new Kafka({
   clientId: "primary-api",
   brokers: ["localhost:9092"],
 });
 
-const producer = kafka.producer();
+let producer: Producer;
+let isConnected = false;
 
-export const connectProducer = async () => {
-  await producer.connect();
+export const initKafkaProducer = async () => {
+  if (!producer) {
+    producer = kafka.producer();
+  }
+
+  if (!isConnected) {
+    await producer.connect();
+    isConnected = true;
+    console.log("✅ Kafka Producer Connected");
+  }
 };
 
-export const pushNewContract = async (projectId: string, contractAddress: string) => {
-  await producer.send({
-    topic: "new-contracts",
-    messages: [{ value: JSON.stringify({ projectId, contractAddress }) }],
-  });
+const safeSend = async (topic: string, payload: any) => {
+  try {
+    if (!isConnected) {
+      await initKafkaProducer();
+    }
+
+    await producer.send({
+      topic,
+      messages: [{ value: JSON.stringify(payload) }],
+    });
+  } catch (err) {
+    console.log("⚠️ Kafka send failed. Reconnecting...");
+
+    isConnected = false;
+    await initKafkaProducer();
+
+    await producer.send({
+      topic,
+      messages: [{ value: JSON.stringify(payload) }],
+    });
+  }
 };
 
-export const pushThreatAlert = async (webhookUrl: string, message: string) => {
-  await producer.send({
-    topic: "threat-alerts",
-    messages: [{ value: JSON.stringify({ webhookUrl, message }) }],
-  });
+export const pushNewContract = async (
+  projectId: string,
+  contractAddress: string
+) => {
+  await safeSend("new-contracts", { projectId, contractAddress });
+};
+
+export const pushThreatAlert = async (
+  webhookUrl: string,
+  message: string
+) => {
+  await safeSend("threat-alerts", { webhookUrl, message });
 };
 
 export const pushKillSwitchAction = async (data: {
@@ -31,8 +63,5 @@ export const pushKillSwitchAction = async (data: {
   tx: string;
   allowedActions: "KILLSWITCH" | "TIMELOCK" | "BOTH";
 }) => {
-  await producer.send({
-    topic: "kill-switch-actions",
-    messages: [{ value: JSON.stringify(data) }],
-  });
+  await safeSend("kill-switch-actions", data);
 };

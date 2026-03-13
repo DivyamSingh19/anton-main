@@ -2,9 +2,12 @@
   "name": "alert-worker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node dist/index.js",
+    "build": "tsc -b",
+    "dev": "bun run build && bun run server"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +20,9 @@
     "axios": "^1.13.6",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "redis": "^5.11.0"
+    "kafkajs": "^2.2.4",
+    "redis": "^5.11.0",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.8"

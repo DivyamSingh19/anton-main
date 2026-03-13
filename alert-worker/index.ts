@@ -1,5 +1,6 @@
 import axios from "axios"
 import { createClient } from "redis"
+import { Kafka } from "kafkajs"
 
 const WORKER_ID = `worker-${process.pid}-${Date.now()}`
 const HEARTBEAT_INTERVAL_MS = 5000
@@ -33,7 +34,16 @@ const stopHeartbeat = async (redisClient: ReturnType<typeof createClient>): Prom
     console.log(`Worker ${WORKER_ID} deregistered from Redis`)
 }
 
-const startWorker = async (consumer: any, producer: any, redisClient: ReturnType<typeof createClient>): Promise<void> => {
+const kafka = new Kafka({
+  clientId: WORKER_ID,
+  brokers: ["localhost:9092"],
+});
+
+const consumer = kafka.consumer({ groupId: "alert-worker-group" });
+
+const startWorker = async (): Promise<void> => {
+    const redisClient = createClient()
+    await redisClient.connect()
 
     await startHeartbeat(redisClient)
  
@@ -46,42 +56,37 @@ const startWorker = async (consumer: any, producer: any, redisClient: ReturnType
         process.exit(0)
     })
 
+    await consumer.connect()
+    console.log(`Worker ${WORKER_ID} connected to Kafka`)
+
     await consumer.subscribe({
-        topic: "webhook-jobs",
+        topic: "threat-alerts",
         fromBeginning: false
     })
 
     await consumer.run({
         eachMessage: async ({ message }: { message: any }) => {
             const job = JSON.parse(message.value.toString())
-            await processWebhookJob(job, producer)
+            await processWebhookJob(job)
         }
     })
 }
 
-const processWebhookJob = async (job: any, mqProducer: any): Promise<void> => {
+const processWebhookJob = async (job: any): Promise<void> => {
 
     const { webhookUrl, message, jobId } = job
 
     try {
         await axios.post(webhookUrl, { text: message })
-
-        console.log("Webhook sent successfully")
-
-        await mqProducer.send({
-            topic: "webhook-replies",
-            messages: [{ key: jobId, value: JSON.stringify({ status: "SUCCESS", jobId }) }]
-        })
-
+        console.log(`Webhook sent successfully to ${webhookUrl}`)
     } catch (err: any) {
-
-        console.error("Webhook failed", err.message)
-
-        await mqProducer.send({
-            topic: "webhook-replies",
-            messages: [{ key: jobId, value: JSON.stringify({ status: "FAILED", jobId, error: err.message }) }]
-        })
+        console.error(`Webhook failed for ${webhookUrl}`, err.message)
     }
+}
+
+// Start immediately when file is run directly
+if (require.main === module) {
+    startWorker().catch(console.error)
 }
 
 export { startWorker }

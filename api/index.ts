@@ -12,7 +12,7 @@ import walletRouter from "./routes/wallet"
 import projectRouter from "./routes/projects"
 import killSwitchRouter from "./routes/killswitch"
 import timelockRouter from "./routes/timelock"
-
+import { initKafkaProducer } from "./kafka/config"
 const app = express()
 
 app.use(express.json({ limit: "10mb" }));
@@ -55,7 +55,12 @@ app.use("/api/user/killswitch",killSwitchRouter)
 //timelock
 app.use("/api/user/timelock",timelockRouter)
 
+const start = async () => {
+  await initKafkaProducer();
 
-app.listen(port,()=>{
-    console.log("Server started on:",port)
-})
+  app.listen(port, () => {
+    console.log("Server running on",port);
+  });
+};
+
+start();
