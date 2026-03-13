@@ -50,7 +50,7 @@ model UserProjects {
   title       String
   contractAddress   String
   abi         Json
-  contract    Contracts[]
+  attacks    ContractAttack[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -67,6 +67,7 @@ model UserProfile {
   user      User     @relation(fields: [userId], references: [id])
   bio       String?
   avatarUrl String?
+  headLine   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -102,14 +103,7 @@ model ContractFingerPrint {
   updatedAt DateTime @updatedAt
 }
 
-model Contracts {
-  id        String       @id @default(uuid())
-  projectId String       @unique
-  projects  UserProjects @relation(fields: [projectId], references: [id])
-  attacks   ContractAttack[]
-  updatedAt DateTime     @updatedAt
-  createdAt DateTime     @default(now())
-}
+ 
 
 model ContractAttack{
   id    String  @id @default(uuid())
@@ -118,7 +112,7 @@ model ContractAttack{
   actionTaken String
   alertsGenerated String
   contractId  String
-  contract    Contracts @relation(fields: [contractId],references: [id])
+  projects    UserProjects @relation(fields: [contractId],references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@index([contractId])
