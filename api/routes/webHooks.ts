@@ -54,4 +54,11 @@ webhookRouter.put("/slack",userAuthMiddleware,async (req:Request,res:Response,ne
     }
 })
 
+webhookRouter.get("/all",userAuthMiddleware,async (req:Request,res:Response,next:NextFunction) => {
+    try {
+        await controller.userwebhooks(req,res)
+    } catch (error) {
+        next()
+    }
+})
 export default webhookRouter

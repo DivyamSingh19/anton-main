@@ -55,4 +55,16 @@ export class AuthService {
       throw new ServerError("Could not create user, internal server error");
     }
   }
+  findUserWebhooks = async (userId: string) => {
+    return await prisma.userWebHooks.findFirst({
+      where: { userId },
+      select: {
+        id: true,
+        slackurl: true,
+        discordUrl: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  };
 }

@@ -341,20 +341,41 @@ export class WebhookController {
     }
     
   };
-   userwebhooks = async (req:Request,res:Response) => {
-      try {
-          const userId = req.userId
-          if(!userId){
-            return res.status(HTTPStatus.Unauthorized).json({
-                success:false,
-                message:"User not authorized"
-            })
-          }
-      } catch (error) {
-        return res.status(HTTPStatus.InternalError).json({
-            success:false,
-            message:(error as Error).message
-        })
-      }
+   userwebhooks = async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+    if (!userId) {
+      return res.status(HTTPStatus.Unauthorized).json({
+        success: false,
+        message: "User not authorized",
+      });
     }
+
+    const user = await this.userService.findUserFromId(userId);
+    if (!user) {
+      return res.status(HTTPStatus.Notfound).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const webhooks = await this.userService.findUserWebhooks(userId);
+    if (!webhooks) {
+      return res.status(HTTPStatus.Notfound).json({
+        success: false,
+        message: "No webhooks found for this user",
+      });
+    }
+
+    return res.status(HTTPStatus.Success).json({
+      success: true,
+      data: webhooks,
+    });
+  } catch (error) {
+    return res.status(HTTPStatus.InternalError).json({
+      success: false,
+      message: (error as Error).message,
+    });
+  }
+};
 }
