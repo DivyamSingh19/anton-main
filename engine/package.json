@@ -15,10 +15,12 @@
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "amqplib": "^0.10.9",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "kafkajs": "^2.2.4",
     "winston": "^3.19.0"
   }
 }
