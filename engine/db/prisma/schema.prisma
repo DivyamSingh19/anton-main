@@ -1,0 +1,352 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+
+enum ProfileStatus {
+  INITIALIZED
+  COMPLETED
+  SKIPPED
+}
+
+model User {
+  id            String         @id @default(uuid())
+  username      String         @unique
+  email         String         @unique
+  passwordHash  String
+  createdAt     DateTime       @default(now())
+  profileStatus ProfileStatus  @default(SKIPPED)
+  sessions      UserSessions[]
+  projects      UserProjects[]
+  profile       UserProfile?
+  platforms     UserWebHooks[]
+  wallet        UserWallets?
+}
+
+model UserSessions {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  lastLogin    DateTime
+  sessionToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model UserProjects {
+  id          String        @id @default(uuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  status      ProjectStatus
+  description String?
+  title       String
+  contract    Contracts?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum ProjectStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+model UserProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  bio       String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserWebHooks {
+  id         String   @id @default(uuid())
+  userId     String
+  slackurl   String?  @unique
+  discordUrl String?  @unique
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId, slackurl])
+  @@index([userId, discordUrl])
+}
+
+model UserWallets {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  walletAddress String   @unique
+  txId          String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ContractFingerPrint {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Contracts {
+  id        String       @id @default(uuid())
+  projectId String       @unique
+  projects  UserProjects @relation(fields: [projectId], references: [id])
+  attacks   ContractAttack[]
+  updatedAt DateTime     @updatedAt
+  createdAt DateTime     @default(now())
+}
+
+model ContractAttack{
+  id    String  @id @default(uuid())
+  description String
+  startedAt   DateTime
+  actionTaken String
+  alertsGenerated String
+  contractId  String
+  contract    Contracts @relation(fields: [contractId],references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([contractId])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+model Engineer {
+  id           String             @id @default(uuid())
+  name         String
+  email        String             @unique
+  passwordHash String
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  orgId        String
+  profile      EngineerProfile?
+  organization Organization       @relation(fields: [orgId], references: [id])
+  wallet       EngineerWallet?
+  sessions     EngineerSessions[]
+
+  @@index([id])
+}
+
+model EngineerSessions {
+  id           String   @id @default(uuid())
+  engineerId   String
+  engineer     Engineer @relation(fields: [engineerId], references: [id])
+  lastLogin    DateTime
+  sessionToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([engineerId])
+}
+
+model Organization {
+  id           String                 @id @default(uuid())
+  name         String
+  email        String                 @unique
+  passwordHash String
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  engineers    Engineer[]
+  admins       Admin[]
+  wallet       OrganizationWallet?
+  sessions     OrganizationSessions[]
+
+  @@index([id])
+}
+
+model OrganizationSessions {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  lastLogin      DateTime
+  sessionToken   String       @unique
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId])
+}
+
+model Admin {
+  id           String          @id @default(uuid())
+  name         String
+  email        String          @unique
+  passwordHash String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  orgId        String
+  profile      AdminProfile?
+  organization Organization    @relation(fields: [orgId], references: [id])
+  wallet       AdminWallet?
+  sessions     AdminSessions[]
+
+  @@index([id])
+}
+
+model AdminSessions {
+  id           String   @id @default(uuid())
+  adminId      String
+  admin        Admin    @relation(fields: [adminId], references: [id])
+  lastLogin    DateTime
+  sessionToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([adminId])
+}
+
+model EngineerWallet {
+  id            String   @id @default(uuid())
+  engineerId    String   @unique
+  engineer      Engineer @relation(fields: [engineerId], references: [id])
+  walletAddress String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([id])
+}
+
+model OrganizationWallet {
+  id            String       @id @default(uuid())
+  orgId         String       @unique
+  organization  Organization @relation(fields: [orgId], references: [id])
+  walletAddress String       @unique
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([id])
+}
+
+model AdminWallet {
+  id            String   @id @default(uuid())
+  adminId       String   @unique
+  admin         Admin    @relation(fields: [adminId], references: [id])
+  walletAddress String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([id])
+}
+
+model AdminProfile {
+  id          String   @id @default(uuid())
+  adminId     String   @unique
+  admin       Admin    @relation(fields: [adminId], references: [id])
+  bio         String?
+  displayName String?
+  headline    String?
+  avatarUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EngineerProfile {
+  id         String   @id @default(uuid())
+  engineerId String   @unique
+  engineer   Engineer @relation(fields: [engineerId], references: [id])
+  bio        String?
+  avatarUrl  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
