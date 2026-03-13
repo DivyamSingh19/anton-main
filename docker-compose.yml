@@ -21,5 +21,23 @@ services:
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
+  redis-monitoring:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  redis-alerts:
+    image: redis:latest
+    ports:
+      - "6380:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   redis:
       image:

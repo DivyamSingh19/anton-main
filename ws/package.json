@@ -9,6 +9,7 @@
     "dotenv": "^17.3.1",
     "ethers": "^6.16.0",
     "express": "^5.2.1",
+    "ioredis": "^5.10.0",
     "mongo": "^0.1.0",
     "mongoose": "^9.2.4",
     "typescript": "^5.9.3",
