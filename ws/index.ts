@@ -13,12 +13,7 @@ const app = express();
 const port = 4002;
 
 // Initialize MongoDB connection
-connectDB.then(() => {
-  logger.info("Connected to Secondary MongoDB");
-}).catch(err => {
-  logger.error("MongoDB connection error", { error: err });
-});
-
+connectDB()
 // Kafka Configuration
 const kafka = new Kafka({
   clientId: "secondary-server",
@@ -48,8 +43,7 @@ const startKafkaConsumer = async () => {
 };
 
 startKafkaConsumer();
-
-// WebSocket Mempool Monitoring
+ 
 const alchemyWs = new WebSocket(process.env.RPC_URL as string);
 
 alchemyWs.on("open", () => {
@@ -67,7 +61,6 @@ alchemyWs.on("message", async (msg) => {
     if (data.params && data.params.result) {
       const tx = data.params.result;
       
-      // Check if 'to' or 'from' addresses are in our monitored list
       const addressesToCheck = [];
       if (tx.to) addressesToCheck.push(tx.to.toLowerCase());
       if (tx.from) addressesToCheck.push(tx.from.toLowerCase());
@@ -75,7 +68,7 @@ alchemyWs.on("message", async (msg) => {
       for (const addr of addressesToCheck) {
         const isMonitored = await redis.sismember("monitored_contracts", addr);
         if (isMonitored) {
-          logger.info(`🚨 Monitored contract hit! Address: ${addr} | Hash: ${tx.hash}`, {
+          logger.info(` Monitored contract hit! Address: ${addr} | Hash: ${tx.hash}`, {
             metadata: {
               isMempoolEvent: true,
               eventData: {
