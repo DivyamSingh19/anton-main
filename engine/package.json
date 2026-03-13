@@ -27,6 +27,10 @@
     "kafkajs": "^2.2.4",
     "mongoose": "^9.3.0",
     "typescript": "^5.9.3",
-    "winston": "^3.19.0"
+    "winston": "^3.19.0",
+    "winston-mongodb": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/winston": "^2.4.4"
   }
 }
