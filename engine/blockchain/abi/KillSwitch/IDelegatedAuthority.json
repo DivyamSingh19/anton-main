@@ -1,0 +1,154 @@
+{
+    "abi": [
+        {
+            "type": "function",
+            "name": "canExecute",
+            "inputs": [
+                {
+                    "name": "target",
+                    "type": "address",
+                    "internalType": "address"
+                },
+                {
+                    "name": "selector",
+                    "type": "bytes4",
+                    "internalType": "bytes4"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bool",
+                    "internalType": "bool"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "ownerOf",
+            "inputs": [
+                {
+                    "name": "target",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "stateMutability": "view"
+        }
+    ],
+    "bytecode": {
+        "object": "0x",
+        "sourceMap": "",
+        "linkReferences": {}
+    },
+    "deployedBytecode": {
+        "object": "0x",
+        "sourceMap": "",
+        "linkReferences": {}
+    },
+    "methodIdentifiers": {
+        "canExecute(address,bytes4)": "06dd1516",
+        "ownerOf(address)": "14afd79e"
+    },
+    "rawMetadata": "{\"compiler\":{\"version\":\"0.8.33+commit.64118f21\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes4\",\"name\":\"selector\",\"type\":\"bytes4\"}],\"name\":\"canExecute\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/KillSwitch.sol\":\"IDelegatedAuthority\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":forge-std/=lib/forge-std/src/\"]},\"sources\":{\"src/KillSwitch.sol\":{\"keccak256\":\"0xf7bef87f462ac2c3541aa6d7bcbb83d7cf28095b67cf75f82c2b0a1d0e312705\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7bde2467a15079700588189a151ea5af2bef24d2d75d4be1e103cc066f76f8a4\",\"dweb:/ipfs/QmZR3xdHtQKvxCjuepf4YNZ43KYBPpcwEgP7gf31e8tN6d\"]}},\"version\":1}",
+    "metadata": {
+        "compiler": {
+            "version": "0.8.33+commit.64118f21"
+        },
+        "language": "Solidity",
+        "output": {
+            "abi": [
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "target",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bytes4",
+                            "name": "selector",
+                            "type": "bytes4"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "canExecute",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "target",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "ownerOf",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ]
+                }
+            ],
+            "devdoc": {
+                "kind": "dev",
+                "methods": {},
+                "version": 1
+            },
+            "userdoc": {
+                "kind": "user",
+                "methods": {},
+                "version": 1
+            }
+        },
+        "settings": {
+            "remappings": [
+                "forge-std/=lib/forge-std/src/"
+            ],
+            "optimizer": {
+                "enabled": false,
+                "runs": 200
+            },
+            "metadata": {
+                "bytecodeHash": "ipfs"
+            },
+            "compilationTarget": {
+                "src/KillSwitch.sol": "IDelegatedAuthority"
+            },
+            "evmVersion": "prague",
+            "libraries": {}
+        },
+        "sources": {
+            "src/KillSwitch.sol": {
+                "keccak256": "0xf7bef87f462ac2c3541aa6d7bcbb83d7cf28095b67cf75f82c2b0a1d0e312705",
+                "urls": [
+                    "bzz-raw://7bde2467a15079700588189a151ea5af2bef24d2d75d4be1e103cc066f76f8a4",
+                    "dweb:/ipfs/QmZR3xdHtQKvxCjuepf4YNZ43KYBPpcwEgP7gf31e8tN6d"
+                ],
+                "license": "MIT"
+            }
+        },
+        "version": 1
+    },
+    "id": 21
+}

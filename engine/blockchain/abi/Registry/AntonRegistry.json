@@ -1,0 +1,63 @@
+{
+    "abi": [],
+    "bytecode": {
+        "object": "0x6080604052348015600e575f5ffd5b50603e80601a5f395ff3fe60806040525f5ffdfea2646970667358221220f693f676d3a17b0efe08cf490a8b4a92fb450efc8fc5f5b0228eb8147849d17064736f6c63430008210033",
+        "sourceMap": "58:25:17:-:0;;;;;;;;;;;;;;;;;;;",
+        "linkReferences": {}
+    },
+    "deployedBytecode": {
+        "object": "0x60806040525f5ffdfea2646970667358221220f693f676d3a17b0efe08cf490a8b4a92fb450efc8fc5f5b0228eb8147849d17064736f6c63430008210033",
+        "sourceMap": "58:25:17:-:0;;;;;",
+        "linkReferences": {}
+    },
+    "methodIdentifiers": {},
+    "rawMetadata": "{\"compiler\":{\"version\":\"0.8.33+commit.64118f21\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/AntonRegistry.sol\":\"AntonRegisry\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":forge-std/=lib/forge-std/src/\"]},\"sources\":{\"src/AntonRegistry.sol\":{\"keccak256\":\"0x9739e2bee1508ac5762d4280320fb5815cb529f47428e9c48fa3daa679643d1b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://44ffecdcab7c5efa1a6c95de7070df938ea9635028f9124014ecca8cb008a9d4\",\"dweb:/ipfs/Qmd28qd34N1wMfXmqWAPthv4c85daBV24Xw6Y5REfFq1nZ\"]}},\"version\":1}",
+    "metadata": {
+        "compiler": {
+            "version": "0.8.33+commit.64118f21"
+        },
+        "language": "Solidity",
+        "output": {
+            "abi": [],
+            "devdoc": {
+                "kind": "dev",
+                "methods": {},
+                "version": 1
+            },
+            "userdoc": {
+                "kind": "user",
+                "methods": {},
+                "version": 1
+            }
+        },
+        "settings": {
+            "remappings": [
+                "forge-std/=lib/forge-std/src/"
+            ],
+            "optimizer": {
+                "enabled": false,
+                "runs": 200
+            },
+            "metadata": {
+                "bytecodeHash": "ipfs"
+            },
+            "compilationTarget": {
+                "src/AntonRegistry.sol": "AntonRegisry"
+            },
+            "evmVersion": "prague",
+            "libraries": {}
+        },
+        "sources": {
+            "src/AntonRegistry.sol": {
+                "keccak256": "0x9739e2bee1508ac5762d4280320fb5815cb529f47428e9c48fa3daa679643d1b",
+                "urls": [
+                    "bzz-raw://44ffecdcab7c5efa1a6c95de7070df938ea9635028f9124014ecca8cb008a9d4",
+                    "dweb:/ipfs/Qmd28qd34N1wMfXmqWAPthv4c85daBV24Xw6Y5REfFq1nZ"
+                ],
+                "license": "MIT"
+            }
+        },
+        "version": 1
+    },
+    "id": 17
+}

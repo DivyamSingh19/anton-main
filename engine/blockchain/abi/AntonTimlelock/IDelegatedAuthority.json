@@ -1,0 +1,154 @@
+{
+    "abi": [
+        {
+            "type": "function",
+            "name": "canExecute",
+            "inputs": [
+                {
+                    "name": "target",
+                    "type": "address",
+                    "internalType": "address"
+                },
+                {
+                    "name": "selector",
+                    "type": "bytes4",
+                    "internalType": "bytes4"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bool",
+                    "internalType": "bool"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "ownerOf",
+            "inputs": [
+                {
+                    "name": "target",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "stateMutability": "view"
+        }
+    ],
+    "bytecode": {
+        "object": "0x",
+        "sourceMap": "",
+        "linkReferences": {}
+    },
+    "deployedBytecode": {
+        "object": "0x",
+        "sourceMap": "",
+        "linkReferences": {}
+    },
+    "methodIdentifiers": {
+        "canExecute(address,bytes4)": "06dd1516",
+        "ownerOf(address)": "14afd79e"
+    },
+    "rawMetadata": "{\"compiler\":{\"version\":\"0.8.33+commit.64118f21\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes4\",\"name\":\"selector\",\"type\":\"bytes4\"}],\"name\":\"canExecute\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/AntonTimeLock.sol\":\"IDelegatedAuthority\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":forge-std/=lib/forge-std/src/\"]},\"sources\":{\"src/AntonTimeLock.sol\":{\"keccak256\":\"0xf82cff5ee8f23c5535c477fb52e76191fbc14f493113ac9ea58751d533ff8b65\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://214aacf7a2cb3168deec9f902e90e0a87e21ff8a2dc775b6184bb5e64437555c\",\"dweb:/ipfs/QmZA6M4dg9Aut5beJKhEvygoGyMv4U8aNeVhznQfT1abFt\"]}},\"version\":1}",
+    "metadata": {
+        "compiler": {
+            "version": "0.8.33+commit.64118f21"
+        },
+        "language": "Solidity",
+        "output": {
+            "abi": [
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "target",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bytes4",
+                            "name": "selector",
+                            "type": "bytes4"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "canExecute",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "target",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "ownerOf",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ]
+                }
+            ],
+            "devdoc": {
+                "kind": "dev",
+                "methods": {},
+                "version": 1
+            },
+            "userdoc": {
+                "kind": "user",
+                "methods": {},
+                "version": 1
+            }
+        },
+        "settings": {
+            "remappings": [
+                "forge-std/=lib/forge-std/src/"
+            ],
+            "optimizer": {
+                "enabled": false,
+                "runs": 200
+            },
+            "metadata": {
+                "bytecodeHash": "ipfs"
+            },
+            "compilationTarget": {
+                "src/AntonTimeLock.sol": "IDelegatedAuthority"
+            },
+            "evmVersion": "prague",
+            "libraries": {}
+        },
+        "sources": {
+            "src/AntonTimeLock.sol": {
+                "keccak256": "0xf82cff5ee8f23c5535c477fb52e76191fbc14f493113ac9ea58751d533ff8b65",
+                "urls": [
+                    "bzz-raw://214aacf7a2cb3168deec9f902e90e0a87e21ff8a2dc775b6184bb5e64437555c",
+                    "dweb:/ipfs/QmZA6M4dg9Aut5beJKhEvygoGyMv4U8aNeVhznQfT1abFt"
+                ],
+                "license": "MIT"
+            }
+        },
+        "version": 1
+    },
+    "id": 18
+}
