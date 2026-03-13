@@ -180,6 +180,7 @@ export class AuthController {
       return res.status(HTTPStatus.Success).json({
         success: true,
         data: {
+          id:user.id,
           email: user.email,
           username: user.username,
         }
