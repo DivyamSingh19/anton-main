@@ -45,10 +45,12 @@ model UserProjects {
   id          String        @id @default(uuid())
   userId      String
   user        User          @relation(fields: [userId], references: [id])
-  status      ProjectStatus
+  status      ProjectStatus @default(ACTIVE)
   description String?
   title       String
-  contract    Contracts?
+  contractAddress   String
+  abi         Json
+  contract    Contracts[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
