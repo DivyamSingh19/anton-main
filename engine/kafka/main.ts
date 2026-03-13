@@ -1,15 +1,25 @@
 import { Kafka } from "kafkajs";
 
 const kafka = new Kafka({
-  clientId: "kaizen-engine",
+  clientId: "engine",
   brokers: ["localhost:9092"],
 });
 
-const producer = kafka.producer();
+const consumer = kafka.consumer({ groupId: "engine-group" });
 
-const run = async () => {
-  await producer.connect();
-  console.log("Producer connected to Kafka");
+export const startEngineConsumer = async () => {
+  await consumer.connect();
+  await consumer.subscribe({ topic: "kill-switch-actions", fromBeginning: true });
+
+  await consumer.run({
+    eachMessage: async ({ message }) => {
+      if (message.value) {
+        const action = JSON.parse(message.value.toString());
+        console.log("Engine received kill switch action:", action);
+        // Logic for execution and timelocks would go here
+      }
+    },
+  });
 };
 
-run().catch(console.error);
+startEngineConsumer().catch(console.error);

@@ -10,6 +10,7 @@
     "ethers": "^6.16.0",
     "express": "^5.2.1",
     "ioredis": "^5.10.0",
+    "kafkajs": "^2.2.4",
     "mongo": "^0.1.0",
     "mongoose": "^9.2.4",
     "typescript": "^5.9.3",
@@ -17,6 +18,10 @@
     "ws": "^8.19.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^25.5.0",
+    "@types/winston": "^2.4.4",
     "@types/ws": "^8.18.1"
   }
 }
