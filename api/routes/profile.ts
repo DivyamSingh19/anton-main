@@ -7,7 +7,7 @@ const controller = new ProfileController();
 
 profileRouter.get("/", userAuthMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        controller.get(req, res);
+        await controller.get(req, res);
     } catch (error) {
         next(error);
     }
@@ -15,7 +15,7 @@ profileRouter.get("/", userAuthMiddleware, async (req: Request, res: Response, n
 
 profileRouter.post("/create", userAuthMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        controller.create(req, res);
+       await controller.create(req, res);
     } catch (error) {
         next(error);
     }
@@ -23,7 +23,7 @@ profileRouter.post("/create", userAuthMiddleware, async (req: Request, res: Resp
 
 profileRouter.put("/edit", userAuthMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        controller.edit(req, res);
+        await  controller.edit(req, res);
     } catch (error) {
         next(error);
     }
@@ -31,7 +31,7 @@ profileRouter.put("/edit", userAuthMiddleware, async (req: Request, res: Respons
 
 profileRouter.delete("/", userAuthMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        controller.delete(req, res);
+       await controller.delete(req, res);
     } catch (error) {
         next(error);
     }

@@ -1,56 +1,116 @@
 import { ethers } from "ethers";
-import { getTimelockContract, getAuthorityContract } from "../provider";
+import { AntonTimeLock } from "../ts/AntonTimlelock/AntonTimeLock";
+import { IDelegatedAuthority } from "../ts/AntonTimlelock/IDelegatedAuthority";
 
-export async function getDefaultLockDuration(): Promise<string> {
-  const contract = getTimelockContract();
-  const duration = await contract.DEFAULT_LOCK_DURATION();
-  return duration.toString();
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface TxReceipt {
+  txHash: string;
+  blockNumber: number;
+  gasUsed: string;
+  status: "success" | "failed";
 }
 
-export async function getMaxLockDuration(): Promise<string> {
-  const contract = getTimelockContract();
-  const duration = await contract.MAX_LOCK_DURATION();
-  return duration.toString();
+export interface LockedUntilResult {
+  timestamp: string;
+  date: string;
 }
 
-export async function getAuthority(): Promise<string> {
-  const contract = getTimelockContract();
-  return await contract.authority();
+export interface TimelockStatus {
+  target: string;
+  isLocked: boolean;
+  lockDuration: string;
+  lockedUntil: LockedUntilResult;
 }
 
-export async function getKaizenExecutor(): Promise<string> {
-  const contract = getTimelockContract();
-  return await contract.kaizenExecutor();
+export interface TimelockConfig {
+  defaultLockDuration: string;
+  maxLockDuration: string;
+  authority: string;
+  kaizenExecutor: string;
 }
 
-export async function isLocked(target: string): Promise<boolean> {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
-  const contract = getTimelockContract();
-  return await contract.isLocked(target);
+export interface TimelockTriggeredEvent {
+  txHash: string;
+  blockNumber: number;
+  target: string;
+  executor: string;
+  unlockTime: string;
+  unlockDate: string;
 }
 
-export async function getLockDuration(target: string): Promise<string> {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
-  const contract = getTimelockContract();
-  const duration = await contract.lockDuration(target);
-  return duration.toString();
+export interface ManualUnlockEvent {
+  txHash: string;
+  blockNumber: number;
+  target: string;
+  owner: string;
 }
 
-export async function getLockedUntil(
-  target: string
-): Promise<{ timestamp: string; date: string }> {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
-  const contract = getTimelockContract();
-  const ts = await contract.lockedUntil(target);
+export interface DurationUpdatedEvent {
+  txHash: string;
+  blockNumber: number;
+  target: string;
+  duration: string;
+}
+
+// ─── Guards ───────────────────────────────────────────────────────────────────
+
+function assertAddress(value: string, name: string): void {
+  if (!ethers.isAddress(value)) {
+    throw new Error(`Invalid address: ${name}`);
+  }
+}
+
+function assertHex(value: string, name: string): void {
+  if (!ethers.isHexString(value)) {
+    throw new Error(`${name} must be a hex string`);
+  }
+}
+
+function parseTxReceipt(receipt: ethers.TransactionReceipt): TxReceipt {
   return {
-    timestamp: ts.toString(),
-    date: ts > 0n ? new Date(Number(ts) * 1000).toISOString() : "Not locked",
+    txHash: receipt.hash,
+    blockNumber: receipt.blockNumber,
+    gasUsed: receipt.gasUsed.toString(),
+    status: receipt.status === 1 ? "success" : "failed",
   };
 }
 
-export async function getFullTimelockStatus(target: string) {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
-  const contract = getTimelockContract();
+function formatLockedUntil(ts: bigint): LockedUntilResult {
+  return {
+    timestamp: ts.toString(),
+    date: ts > BigInt(0) ? new Date(Number(ts) * 1000).toISOString() : "Not locked",
+  };
+}
+
+// ─── Config ───────────────────────────────────────────────────────────────────
+
+export async function getTimelockConfig(
+  contract: AntonTimeLock
+): Promise<TimelockConfig> {
+  const [defaultLockDuration, maxLockDuration, authority, kaizenExecutor] =
+    await Promise.all([
+      contract.DEFAULT_LOCK_DURATION(),
+      contract.MAX_LOCK_DURATION(),
+      contract.authority(),
+      contract.kaizenExecutor(),
+    ]);
+
+  return {
+    defaultLockDuration: defaultLockDuration.toString(),
+    maxLockDuration: maxLockDuration.toString(),
+    authority,
+    kaizenExecutor,
+  };
+}
+
+// ─── Read ─────────────────────────────────────────────────────────────────────
+
+export async function getTimelockStatus(
+  contract: AntonTimeLock,
+  target: string
+): Promise<TimelockStatus> {
+  assertAddress(target, "target");
 
   const [locked, duration, until] = await Promise.all([
     contract.isLocked(target),
@@ -62,90 +122,110 @@ export async function getFullTimelockStatus(target: string) {
     target,
     isLocked: locked,
     lockDuration: duration.toString(),
-    lockedUntil: {
-      timestamp: until.toString(),
-      date: until > 0n ? new Date(Number(until) * 1000).toISOString() : "Not locked",
-    },
+    lockedUntil: formatLockedUntil(until),
   };
 }
 
-// ─── Write Operations ─────────────────────────────────────────────────────────
+export async function checkIsLocked(
+  contract: AntonTimeLock,
+  target: string
+): Promise<boolean> {
+  assertAddress(target, "target");
+  return contract.isLocked(target);
+}
 
-export async function triggerTimelock(target: string, callData: string) {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
-  if (!ethers.isHexString(callData)) throw new Error("callData must be a hex string");
+export async function getLockDuration(
+  contract: AntonTimeLock,
+  target: string
+): Promise<string> {
+  assertAddress(target, "target");
+  const duration = await contract.lockDuration(target);
+  return duration.toString();
+}
 
-  const contract = getTimelockContract(true);
+export async function getLockedUntil(
+  contract: AntonTimeLock,
+  target: string
+): Promise<LockedUntilResult> {
+  assertAddress(target, "target");
+  const ts = await contract.lockedUntil(target);
+  return formatLockedUntil(ts);
+}
+
+// ─── Write ────────────────────────────────────────────────────────────────────
+
+export async function triggerTimelock(
+  contract: AntonTimeLock,
+  target: string,
+  callData: string
+): Promise<TxReceipt> {
+  assertAddress(target, "target");
+  assertHex(callData, "callData");
+
   const tx = await contract.triggerTimelock(target, callData);
   const receipt = await tx.wait();
-
-  return {
-    txHash: receipt.hash,
-    blockNumber: receipt.blockNumber,
-    gasUsed: receipt.gasUsed.toString(),
-    status: receipt.status === 1 ? "success" : "failed",
-  };
+  if (!receipt) throw new Error("Transaction failed: no receipt returned");
+  return parseTxReceipt(receipt);
 }
 
-export async function manualUnlock(target: string) {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
+export async function manualUnlock(
+  contract: AntonTimeLock,
+  target: string
+): Promise<TxReceipt> {
+  assertAddress(target, "target");
 
-  const contract = getTimelockContract(true);
   const tx = await contract.manualUnlock(target);
   const receipt = await tx.wait();
-
-  return {
-    txHash: receipt.hash,
-    blockNumber: receipt.blockNumber,
-    gasUsed: receipt.gasUsed.toString(),
-    status: receipt.status === 1 ? "success" : "failed",
-  };
+  if (!receipt) throw new Error("Transaction failed: no receipt returned");
+  return parseTxReceipt(receipt);
 }
 
-export async function setLockDuration(target: string, duration: string) {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
+export async function setLockDuration(
+  contract: AntonTimeLock,
+  target: string,
+  duration: string
+): Promise<TxReceipt> {
+  assertAddress(target, "target");
   const durationBig = BigInt(duration);
-  if (durationBig < 0n) throw new Error("duration must be non-negative");
+  if (durationBig < BigInt(0)) throw new Error("duration must be non-negative");
 
-  const contract = getTimelockContract(true);
   const tx = await contract.setLockDuration(target, durationBig);
   const receipt = await tx.wait();
-
-  return {
-    txHash: receipt.hash,
-    blockNumber: receipt.blockNumber,
-    gasUsed: receipt.gasUsed.toString(),
-    status: receipt.status === 1 ? "success" : "failed",
-  };
+  if (!receipt) throw new Error("Transaction failed: no receipt returned");
+  return parseTxReceipt(receipt);
 }
 
-// ─── Authority Operations ─────────────────────────────────────────────────────
+// ─── Authority ────────────────────────────────────────────────────────────────
 
-export async function canExecute(target: string, selector: string): Promise<boolean> {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
-  if (!ethers.isHexString(selector)) throw new Error("selector must be a hex string");
-
-  const contract = getAuthorityContract();
-  return await contract.canExecute(target, selector);
+export async function canExecute(
+  authority: IDelegatedAuthority,
+  target: string,
+  selector: string
+): Promise<boolean> {
+  assertAddress(target, "target");
+  assertHex(selector, "selector");
+  return authority.canExecute(target, selector);
 }
 
-export async function ownerOf(target: string): Promise<string> {
-  if (!ethers.isAddress(target)) throw new Error("Invalid address: target");
-  const contract = getAuthorityContract();
-  return await contract.ownerOf(target);
+export async function getOwnerOf(
+  authority: IDelegatedAuthority,
+  target: string
+): Promise<string> {
+  assertAddress(target, "target");
+  return authority.ownerOf(target);
 }
 
-// ─── Event Queries ────────────────────────────────────────────────────────────
+// ─── Events ───────────────────────────────────────────────────────────────────
 
 export async function getTimelockTriggeredEvents(
+  contract: AntonTimeLock,
   fromBlock: number | "earliest" = "earliest",
   toBlock: number | "latest" = "latest"
-) {
-  const contract = getTimelockContract();
+): Promise<TimelockTriggeredEvent[]> {
   const filter = contract.filters.TimelockTriggered();
   const events = await contract.queryFilter(filter, fromBlock, toBlock);
 
-  return events.map((e: any) => ({
+  return events.map((e) => ({
     txHash: e.transactionHash,
     blockNumber: e.blockNumber,
     target: e.args.target,
@@ -156,14 +236,14 @@ export async function getTimelockTriggeredEvents(
 }
 
 export async function getManualUnlockEvents(
+  contract: AntonTimeLock,
   fromBlock: number | "earliest" = "earliest",
   toBlock: number | "latest" = "latest"
-) {
-  const contract = getTimelockContract();
+): Promise<ManualUnlockEvent[]> {
   const filter = contract.filters.ManualUnlock();
   const events = await contract.queryFilter(filter, fromBlock, toBlock);
 
-  return events.map((e: any) => ({
+  return events.map((e) => ({
     txHash: e.transactionHash,
     blockNumber: e.blockNumber,
     target: e.args.target,
@@ -172,14 +252,14 @@ export async function getManualUnlockEvents(
 }
 
 export async function getDurationUpdatedEvents(
+  contract: AntonTimeLock,
   fromBlock: number | "earliest" = "earliest",
   toBlock: number | "latest" = "latest"
-) {
-  const contract = getTimelockContract();
+): Promise<DurationUpdatedEvent[]> {
   const filter = contract.filters.TimelockDurationUpdated();
   const events = await contract.queryFilter(filter, fromBlock, toBlock);
 
-  return events.map((e: any) => ({
+  return events.map((e) => ({
     txHash: e.transactionHash,
     blockNumber: e.blockNumber,
     target: e.args.target,
