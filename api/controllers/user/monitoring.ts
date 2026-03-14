@@ -2,7 +2,7 @@ import prisma from "../../db/db";
 import { Request, Response } from "express";
 import { HTTPStatus } from "../../utils/httpstatus";
 import { generateFingerprint, AbiItem } from "../../utils/abiFingerprint";
-import { pushNewContract } from "../../kafka/config";
+import { pushNewContract,pushPauseContract } from "../../kafka/config";
 
 export class MonitoringController {
   start = async (req: Request, res: Response) => {
@@ -198,4 +198,77 @@ export class MonitoringController {
       });
     }
   };
+  pause = async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+    if (!userId) {
+      return res.status(HTTPStatus.Unauthorized).json({
+        success: false,
+        message: "User not authorized",
+      });
+    }
+
+    const { projectId } = req.body;
+    if (!projectId) {
+      return res.status(HTTPStatus.BadRequest).json({
+        success: false,
+        message: "Project ID is required",
+      });
+    }
+
+    const project = await prisma.userProjects.findUnique({
+      where: { id: projectId },
+    });
+
+    if (!project) {
+      return res.status(HTTPStatus.Notfound).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    if (project.userId !== userId) {
+      return res.status(HTTPStatus.Unauthorized).json({
+        success: false,
+        message: "You are not authorized to pause monitoring for this project",
+      });
+    }
+
+    if (project.monitoringStatus !== "ACTIVE") {
+      return res.status(HTTPStatus.BadRequest).json({
+        success: false,
+        message: "Monitoring is not active for this project",
+      });
+    }
+
+    // Mark monitoring as inactive in the monitoring list
+    await prisma.userMonitoringList.update({
+      where: {
+        userId_projectId: { userId, projectId },
+      },
+      data: { isActive: false },
+    });
+
+    // Update project monitoring status to INACTIVE
+    await prisma.userProjects.update({
+      where: { id: projectId },
+      data: { monitoringStatus: "INACTIVE" },
+    });
+
+    // Push pause event to Kafka — sec server picks this up and removes
+    // the contract from its active monitoring list
+    await pushPauseContract(projectId, project.contractAddress);
+
+    return res.status(HTTPStatus.Success).json({
+      success: true,
+      message: "Monitoring paused successfully",
+    });
+  } catch (error) {
+    console.error("Monitoring pause error:", error);
+    return res.status(HTTPStatus.InternalError).json({
+      success: false,
+      error: (error as Error).message,
+    });
+  }
+};
 }

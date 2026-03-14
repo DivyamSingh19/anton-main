@@ -66,3 +66,23 @@ export const pushKillSwitchAction = async (data: {
 }) => {
   await safeSend("kill-switch-actions", data);
 };
+
+export const pushPauseContract = async (
+  projectId: string,
+  contractAddress: string,
+) => {
+  await producer.send({
+    topic:"new-contracts",  
+    messages: [
+      {
+        key: contractAddress,
+        value: JSON.stringify({
+          action: "PAUSE",
+          projectId,
+          contractAddress,
+          timestamp: Date.now(),
+        }),
+      },
+    ],
+  });
+};
