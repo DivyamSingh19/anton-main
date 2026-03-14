@@ -22,7 +22,7 @@ app.use(cors({ origin: [
 ], credentials: true }));
 app.use(cookieParser())
 dotenv.config() 
- connectDB()
+connectDB()
  
 const port = process.env.PORT 
 
