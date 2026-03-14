@@ -6,8 +6,7 @@ import type { KillSwitch } from "../ts/KillSwitch/KillSwitch";
 import type { IDelegatedAuthority } from "../ts/KillSwitch/IDelegatedAuthority";
 import * as KillSwitchSvc from "../services/killswitch.service";
 
-// ─── Private Helpers ──────────────────────────────────────────────────────────
-
+ 
 function getProvider(): ethers.JsonRpcProvider {
   const rpcUrl = process.env.RPC_URL;
   if (!rpcUrl) throw new Error("Contract error: RPC_URL env var is not set");
@@ -118,9 +117,7 @@ export async function getOwnerOf(req: Request, res: Response): Promise<void> {
     handleError(res, err);
   }
 }
-
-// ─── Write Controllers ────────────────────────────────────────────────────────
-
+ 
 export async function triggerKillSwitch(req: Request, res: Response): Promise<void> {
   try {
     const { target, pauseCallData } = req.body as {
