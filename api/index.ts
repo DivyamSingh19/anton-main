@@ -11,6 +11,7 @@ import walletRouter from "./routes/wallet"
 import projectRouter from "./routes/projects"
 import killswitchRouter from "./blockchain/routes/killswitch.routes"
 import timelockRouter from "./blockchain/routes/timelock.routes"
+import monitoringRouter from "./routes/monitoring"
 import { initKafkaProducer } from "./kafka/config"
 const app = express()
 
@@ -53,6 +54,8 @@ app.use("/api/user/projects",projectRouter)
 app.use("/api/user/killswitch",killswitchRouter)
 //timelock
 app.use("/api/user/timelock",timelockRouter)
+//monitoring
+app.use("/api/user/monitoring",monitoringRouter)
 
 const start = async () => {
   await initKafkaProducer();

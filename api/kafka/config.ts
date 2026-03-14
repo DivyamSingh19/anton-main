@@ -45,9 +45,10 @@ const safeSend = async (topic: string, payload: any) => {
 
 export const pushNewContract = async (
   projectId: string,
-  contractAddress: string
+  contractAddress: string,
+  fingerprint: any
 ) => {
-  await safeSend("new-contracts", { projectId, contractAddress });
+  await safeSend("new-contracts", { projectId, contractAddress, fingerprint });
 };
 
 export const pushThreatAlert = async (
