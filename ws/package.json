@@ -6,6 +6,8 @@
     "dev": "bun run build && bun run server"
   },
   "dependencies": {
+    "@influxdata/influxdb-client": "^1.35.0",
+    "axios": "^1.13.6",
     "dotenv": "^17.3.1",
     "ethers": "^6.16.0",
     "express": "^5.2.1",

@@ -7,5 +7,6 @@ const monitoringController = new MonitoringController();
 
 monitoringRouter.post("/start", userAuthMiddleware, monitoringController.start);
 monitoringRouter.get("/view", userAuthMiddleware, monitoringController.view);
-monitoringRouter.put("/pause",userAuthMiddleware,monitoringController.pause)
+monitoringRouter.put("/pause",userAuthMiddleware,monitoringController.pause);
+monitoringRouter.get("/timeseries/:contractAddress", monitoringController.getTimeSeries);
 export default monitoringRouter;

@@ -1,5 +1,6 @@
 import prisma from "../../db/db";
 import { Request, Response } from "express";
+import { InfluxDB } from "@influxdata/influxdb-client";
 import { HTTPStatus } from "../../utils/httpstatus";
 import { generateFingerprint, AbiItem } from "../../utils/abiFingerprint";
 import { pushNewContract,pushPauseContract } from "../../kafka/config";
@@ -271,4 +272,79 @@ export class MonitoringController {
     });
   }
 };
+
+  getTimeSeries = async (req: Request, res: Response) => {
+    try {
+      const userId = req.userId;
+      if (!userId) {
+        return res.status(HTTPStatus.Unauthorized).json({
+          success: false,
+          message: "User not authorized",
+        });
+      }
+
+      const { contractAddress } = req.params;
+      if (!contractAddress) {
+        return res.status(HTTPStatus.BadRequest).json({
+          success: false,
+          message: "Contract address is required",
+        });
+      }
+
+      // Initialize InfluxDB client (using same env vars as WS)
+      const url = process.env.INFLUX_URL || "http://localhost:8086";
+      const token = process.env.INFLUX_TOKEN;
+      const org = process.env.INFLUX_ORG || "kaizen";
+      const bucket = process.env.INFLUX_BUCKET || "kaizen_metrics";
+
+      if (!token) {
+        return res.status(HTTPStatus.InternalError).json({
+          success: false,
+          message: "InfluxDB token not configured",
+        });
+      }
+
+      const queryApi = new InfluxDB({ url, token }).getQueryApi(org);
+
+      // Query past 24 hours of data for this contract
+      const fluxQuery = `
+        from(bucket:"${bucket}")
+          |> range(start: -24h)
+          |> filter(fn: (r) => r._measurement == "contract_metrics")
+          |> filter(fn: (r) => r.contractAddress == "${String(contractAddress).toLowerCase()}")
+          |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
+          |> sort(columns: ["_time"], desc: false)
+      `;
+
+      const results: any[] = [];
+      
+      await new Promise<void>((resolve, reject) => {
+        queryApi.queryRows(fluxQuery, {
+          next(row, tableMeta) {
+            const o = tableMeta.toObject(row);
+            results.push(o);
+          },
+          error(error) {
+            console.error("InfluxDB query error:", error);
+            reject(error);
+          },
+          complete() {
+            resolve();
+          },
+        });
+      });
+
+      return res.status(HTTPStatus.Success).json({
+        success: true,
+        data: results,
+      });
+
+    } catch (error) {
+      console.error("Monitoring timeSeries error:", error);
+      return res.status(HTTPStatus.InternalError).json({
+        success: false,
+        error: (error as Error).message,
+      });
+    }
+  };
 }
