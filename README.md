@@ -73,7 +73,18 @@ Stack:
 * Node.js
 * Express
 * Prisma
-* PostgreSQL
+* Redis (Cache)
+* Kafka (Event Streaming)
+* Ethereum
+* Sepolia
+* Alchemy
+* Pinata
+* InfluxDB (Timeseries Database)
+* PostgreSQL (Relational Database)
+* MongoDB (Event Storage)
+* Next.js (Frontend)
+* Tailwind CSS (Styling)
+
 
 ---
 
@@ -96,11 +107,7 @@ Design considerations:
 * deduplication safeguards
 * connection failover strategy
 
-Stack:
 
-* Bun / Node.js
-* Redis
-* Alchemy WebSocket RPC
 
 ---
 
