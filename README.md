@@ -2,6 +2,11 @@
 
 Kaizen is a comprehensive, real-time monitoring and threat detection pipeline for EVM smart contracts. It combines mempool analysis, timeseries data processing, and machine learning to identify and mitigate protocol risks autonomously.
 
+## 🔗 Related Repositories
+
+- **Frontend UI**: [kaizen-ui](https://github.com/DivyamSingh19/kaizen-ui)
+- **Smart Contracts**: [kaizen-contracts](https://github.com/DivyamSingh19/kaizen-contracts)
+
 ## 🚀 Overview
 
 Kaizen monitors the Ethereum mempool for transactions interacting with registered contracts. It calculates real-time metrics, evaluates them against ML-driven anomaly detection models, and can trigger autonomous protective measures (like kill-switches) via Kafka-driven alerts.

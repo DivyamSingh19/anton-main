@@ -145,10 +145,13 @@ alchemyWs.on("message", async (msg) => {
           // ---------------------------------------------------------
           const mlServerUrl = process.env.ML_SERVER_URL || "http://127.0.0.1:8000";
           try {
-            const mlResponse = await axios.post(`${mlServerUrl}/analyze_block`, metrics);
+            const mlResponse = await axios.post(`${mlServerUrl}/analyze_block`, {
+              ...metrics,
+              contractAddress: addr
+            });
             const { risk_score, risk_level, action, attack_type } = mlResponse.data;
 
-            logger.info(`ML Classification for ${addr}: Risk: ${risk_level} (${risk_score}) | Action: ${action} | Type: ${attack_type}`);
+            logger.info(`ML Classification for ${addr} | Hash: ${tx.hash} | Risk: ${risk_level} (${risk_score}) | Action: ${action} | Type: ${attack_type}`);
 
             // Dispatch Alert to primary processing if risk needs attention
             if (
@@ -174,7 +177,7 @@ alchemyWs.on("message", async (msg) => {
             }
 
           } catch (mlErr: any) {
-            logger.error(`ML Server unreachable or failed for ${addr}`, { 
+            logger.error(`ML Server unreachable or failed for ${addr} | Hash: ${tx.hash}`, { 
               error: mlErr.message,
               details: mlErr.response?.data 
             });
