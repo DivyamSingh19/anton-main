@@ -51,6 +51,8 @@ model UserProjects {
   contractAddress   String
   abi         Json
   attacks    ContractAttack[]
+   timelocks     ProjectTimeLocks[]
+  killswitches  ProjectKillSwitches[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -121,6 +123,29 @@ model ContractAttack{
 
 
 
+model ProjectTimeLocks{
+  id  String @id @default(uuid())
+  contractAddress  String
+  projectId    String 
+  txId      String
+  walletAddress   String
+  project      UserProjects @relation(fields: [projectId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime 
+
+}
+
+model ProjectKillSwitches{
+  id  String @id @default(uuid())
+  contractAddress  String
+  projectId    String 
+  txId      String
+  walletAddress String
+  project      UserProjects @relation(fields: [projectId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime 
+
+}
 
 
 
