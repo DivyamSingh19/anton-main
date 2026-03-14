@@ -40,6 +40,7 @@ const logger = winston.createLogger({
       ),
     }),
     new MongoTransport(),
+    new winston.transports.File({ filename: "logs/debug.log" }),
   ],
 });
 

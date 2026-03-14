@@ -286,7 +286,9 @@ export class MonitoringController {
       const url = process.env.INFLUX_URL as string;
       const token = process.env.INFLUX_TOKEN;
       const org = process.env.INFLUX_ORG || "kaizen";
-      const bucket = process.env.INFLUX_BUCKET || "kaizen_metrics";
+      const bucket = process.env.INFLUX_BUCKET || "main";
+
+      console.log(`[TIMESERIES] Querying InfluxDB. Org: ${org}, Bucket: ${bucket}, Address: ${contractAddress}`);
 
       if (!token) {
         return res.status(HTTPStatus.InternalError).json({
@@ -299,13 +301,14 @@ export class MonitoringController {
 
       // Query past 24 hours of data for this contract
       const fluxQuery = `
-        from(bucket:"${bucket}")
+        from(bucket: "${bucket}")
           |> range(start: -24h)
           |> filter(fn: (r) => r._measurement == "contract_metrics")
           |> filter(fn: (r) => r.contractAddress == "${String(contractAddress).toLowerCase()}")
           |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
           |> sort(columns: ["_time"], desc: false)
       `;
+      console.log(`[TIMESERIES] Flux Query: ${fluxQuery}`);
 
       const results: any[] = [];
       

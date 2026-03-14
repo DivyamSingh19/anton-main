@@ -40,7 +40,7 @@ export interface TransactionMetrics {
   inflow_outflow_ratio: number;
 }
 
-export const writeMetrics = (contractAddress: string, metrics: TransactionMetrics) => {
+export const writeMetrics = async (contractAddress: string, metrics: TransactionMetrics) => {
   if (!token) return;
 
   try {
@@ -69,6 +69,7 @@ export const writeMetrics = (contractAddress: string, metrics: TransactionMetric
       .floatField("inflow_outflow_ratio", metrics.inflow_outflow_ratio);
 
     writeApi.writePoint(point);
+    await writeApi.flush();
   } catch (err) {
     logger.error("Error writing metrics to InfluxDB", { error: err });
   }

@@ -1,4 +1,4 @@
-import { InfluxDB, Point } from "@influxdata/influxdb-client";
+import { InfluxDB } from "@influxdata/influxdb-client";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -19,38 +19,26 @@ async function debugInflux() {
   }
 
   const influx = new InfluxDB({ url, token });
-  
-  // TEST WRITE
-  console.log("Attempting a test write...");
-  const writeApi = influx.getWriteApi(org, bucket, "ns");
-  const testPoint = new Point("debug_test")
-    .tag("test", "true")
-    .floatField("value", Math.random());
-  
-  writeApi.writePoint(testPoint);
-  try {
-    await writeApi.flush();
-    console.log("Test point written and flushed.");
-  } catch (e) {
-    console.error("Flush failed:", e);
-  }
-
   const queryApi = influx.getQueryApi(org);
   
-  // Query ALL data in the last 1h to see if anything is there
+  // 1. Check for ANY data in contract_metrics
   const fluxQuery = `
     from(bucket: "${bucket}")
-      |> range(start: -1h)
-      |> limit(n: 5)
+      |> range(start: -24h)
+      |> filter(fn: (r) => r._measurement == "contract_metrics")
+      |> group(columns: ["contractAddress"])
+      |> distinct(column: "contractAddress")
   `;
 
-  console.log("Running query:", fluxQuery);
+  console.log("Querying unique contract addresses in InfluxDB...");
   try {
-    const results: any[] = [];
+    const addresses: Set<string> = new Set();
     await new Promise<void>((resolve, reject) => {
       queryApi.queryRows(fluxQuery, {
         next(row, tableMeta) {
-          results.push(tableMeta.toObject(row));
+          const obj = tableMeta.toObject(row);
+          if (obj.contractAddress) addresses.add(obj.contractAddress);
+          else if (obj._value) addresses.add(obj._value);
         },
         error(err) {
           reject(err);
@@ -61,9 +49,50 @@ async function debugInflux() {
       });
     });
     
-    console.log(`Found ${results.length} total rows in last hour.`);
-    if (results.length > 0) {
-      console.log("Sample rows:", JSON.stringify(results, null, 2));
+    console.log("Found contract addresses:", Array.from(addresses));
+
+    // 2. Query raw data for one monitored address if found
+    if (addresses.size > 0) {
+        const firstAddr = Array.from(addresses)[0];
+        console.log(`Querying raw fields for ${firstAddr}...`);
+        const rawQuery = `
+            from(bucket: "${bucket}")
+                |> range(start: -24h)
+                |> filter(fn: (r) => r._measurement == "contract_metrics")
+                |> filter(fn: (r) => r.contractAddress == "${firstAddr}")
+                |> limit(n: 5)
+        `;
+        const rows: any[] = [];
+        await new Promise<void>((resolve, reject) => {
+            queryApi.queryRows(rawQuery, {
+                next(row, tableMeta) {
+                    rows.push(tableMeta.toObject(row));
+                },
+                error(err) { reject(err); },
+                complete() { resolve(); },
+            });
+        });
+        console.log("Raw rows sample:", JSON.stringify(rows, null, 2));
+    } else {
+        console.log("No data found in 'contract_metrics' measurement in the last 24h.");
+        
+        // Check ALL measurements
+        console.log("Checking all measurements in the bucket...");
+        const allMeasQuery = `
+            import "influxdata/influxdb/schema"
+            schema.measurements(bucket: "${bucket}")
+        `;
+        const measurements: string[] = [];
+        await new Promise<void>((resolve, reject) => {
+            queryApi.queryRows(allMeasQuery, {
+                next(row, tableMeta) {
+                    measurements.push(tableMeta.toObject(row)._value);
+                },
+                error(err) { reject(err); },
+                complete() { resolve(); },
+            });
+        });
+        console.log("Available measurements:", measurements);
     }
   } catch (error) {
     console.error("Error querying InfluxDB:", error);

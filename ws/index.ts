@@ -67,7 +67,7 @@ alchemyWs.on("open", () => {
   alchemyWs.send(JSON.stringify({
     id: 1,
     method: "eth_subscribe",
-    params: ["newPendingTransactions"]
+    params: ["newPendingTransactions", { fullTransactions: true }]
   }));
 });
 
@@ -77,12 +77,33 @@ alchemyWs.on("message", async (msg) => {
   try {
     const data = JSON.parse(msg.toString());
     if (data.params && data.params.result) {
-      const tx = data.params.result;
+      let tx = data.params.result;
       
+      // If Alchemy only sends the hash, we must fetch the full transaction to see 'to/from'
+      if (typeof tx === 'string') {
+        try {
+          const rpcUrl = process.env.RPC_URL?.replace("wss://", "https://") || "";
+          const response = await axios.post(rpcUrl, {
+            jsonrpc: "2.0",
+            id: 2,
+            method: "eth_getTransactionByHash",
+            params: [tx]
+          });
+          if (response.data && response.data.result) {
+            tx = response.data.result;
+          } else {
+            return; // Skip if we can't get details
+          }
+        } catch (err) {
+          logger.error(`Failed to fetch tx details for hash ${tx}`, { error: err });
+          return;
+        }
+      }
+
       const addressesToCheck = [];
       if (tx.to) addressesToCheck.push(tx.to.toLowerCase());
-      // Usually we index by the contract address which is 'to'
-      
+      if (tx.from) addressesToCheck.push(tx.from.toLowerCase());
+
       for (const addr of addressesToCheck) {
         const isMonitored = await redis.sismember("monitored_contracts", addr);
         if (isMonitored) {
@@ -117,7 +138,7 @@ alchemyWs.on("message", async (msg) => {
             inflow_outflow_ratio: !isOutflow ? 1 : 0
           };
 
-          writeMetrics(addr, metrics);
+          await writeMetrics(addr, metrics);
 
           // ---------------------------------------------------------
           // ML Server Integration
@@ -152,8 +173,11 @@ alchemyWs.on("message", async (msg) => {
                logger.info(`🚨 Dispatched Kafka Threat Alert for ${addr}`);
             }
 
-          } catch (mlErr) {
-            logger.error(`ML Server unreachable or failed for ${addr}`, { error: mlErr });
+          } catch (mlErr: any) {
+            logger.error(`ML Server unreachable or failed for ${addr}`, { 
+              error: mlErr.message,
+              details: mlErr.response?.data 
+            });
           }
         }
       }
