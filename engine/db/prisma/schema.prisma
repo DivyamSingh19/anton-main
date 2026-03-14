@@ -28,6 +28,7 @@ model User {
   profile       UserProfile?
   platforms     UserWebHooks[]
   wallet        UserWallets?
+  monitoring    UserMonitoringList[]
 }
 
 model UserSessions {
@@ -53,6 +54,8 @@ model UserProjects {
   abi         Json
   title       String
   contract    Contracts?
+  fingerprints ContractFingerPrint[]
+  monitoringList UserMonitoringList[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -100,8 +103,42 @@ model UserWallets {
 
 model ContractFingerPrint {
   id        String   @id @default(uuid())
+  projectId String   @unique
+  project   UserProjects @relation(fields: [projectId], references: [id])
+
+  payableFunctions    String[]
+  adminFunctions      String[]
+  valueFunctions      String[]
+  governanceFunctions String[]
+  allFunctions        String[]
+
+  highRiskEvents    String[]
+  flowEvents        String[]
+  governanceEvents  String[]
+  allEvents         String[]
+
+  hasFlashLoan         Boolean @default(false)
+  hasAdminChange       Boolean @default(false)
+  hasGovernance        Boolean @default(false)
+  hasEmergencyWithdraw Boolean @default(false)
+  isPayable            Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model UserMonitoringList {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  projectId String
+  project   UserProjects @relation(fields: [projectId], references: [id])
+  isActive  Boolean  @default(true)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, projectId])
 }
 
 model Contracts {
