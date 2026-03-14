@@ -51,7 +51,8 @@ model UserProjects {
   contractAddress   String
   abi         Json
   attacks    ContractAttack[]
-   timelocks     ProjectTimeLocks[]
+  timelocks     ProjectTimeLocks[]
+  monitoringStatus  MONITORINGSTATUS?
   killswitches  ProjectKillSwitches[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -61,6 +62,10 @@ enum ProjectStatus {
   ACTIVE
   INACTIVE
   ARCHIVED
+}
+enum MONITORINGSTATUS{
+  ACTIVE
+  INACTIVE
 }
 
 model UserProfile {
