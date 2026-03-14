@@ -9,8 +9,8 @@ import profileRouter from "./routes/profile"
 import webhookRouter from "./routes/webHooks"
 import walletRouter from "./routes/wallet"
 import projectRouter from "./routes/projects"
-import killSwitchRouter from "./routes/killswitch"
-import timelockRouter from "./routes/timelock"
+import killswitchRouter from "./blockchain/routes/killswitch.routes"
+import timelockRouter from "./blockchain/routes/timelock.routes"
 import { initKafkaProducer } from "./kafka/config"
 const app = express()
 
@@ -50,7 +50,7 @@ app.use("/api/user/wallet",walletRouter)
 //projects
 app.use("/api/user/projects",projectRouter)
 //killswitch
-app.use("/api/user/killswitch",killSwitchRouter)
+app.use("/api/user/killswitch",killswitchRouter)
 //timelock
 app.use("/api/user/timelock",timelockRouter)
 
