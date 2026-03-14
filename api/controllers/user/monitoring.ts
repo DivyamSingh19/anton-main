@@ -275,14 +275,6 @@ export class MonitoringController {
 
   getTimeSeries = async (req: Request, res: Response) => {
     try {
-      const userId = req.userId;
-      if (!userId) {
-        return res.status(HTTPStatus.Unauthorized).json({
-          success: false,
-          message: "User not authorized",
-        });
-      }
-
       const { contractAddress } = req.params;
       if (!contractAddress) {
         return res.status(HTTPStatus.BadRequest).json({
@@ -290,9 +282,8 @@ export class MonitoringController {
           message: "Contract address is required",
         });
       }
-
-      // Initialize InfluxDB client (using same env vars as WS)
-      const url = process.env.INFLUX_URL || "http://localhost:8086";
+ 
+      const url = process.env.INFLUX_URL as string;
       const token = process.env.INFLUX_TOKEN;
       const org = process.env.INFLUX_ORG || "kaizen";
       const bucket = process.env.INFLUX_BUCKET || "kaizen_metrics";
