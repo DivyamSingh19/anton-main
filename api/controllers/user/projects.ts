@@ -4,6 +4,8 @@ import { HTTPStatus } from "../../utils/httpstatus";
 import { AuthService } from "../../services/user/auth.service";
 import { ProjectService } from "../../services/user/project.service";
 import { checkContractAddress } from "../../utils/validate.contract";
+import { ethers } from "ethers";
+import { DelegatedAuthorityService } from "../../blockchain/services/delegated-authority-services";
 
 export class ProjectController {
   private userService: AuthService;
@@ -14,7 +16,7 @@ export class ProjectController {
   }
   add = async (req: Request, res: Response) => {
     try {
-      const { title, description, contractAddress, abi } = req.body;
+      const { title, description, contractAddress, abi, signature } = req.body;
       if (!title || !contractAddress || !abi) {
         return res.status(HTTPStatus.BadRequest).json({
           sucess: false,
@@ -52,16 +54,58 @@ export class ProjectController {
           contractAddress: contractAddress,
           abi: abi,
           userId: userId,
+          ownerSignature: signature,
         },
       });
 
+      // ─── Parallel Blockchain Registration & Setup ─────────────────────────────
+      let registrationTxHash = null;
+      try {
+        const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+        const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+        const authService = new DelegatedAuthorityService(
+          process.env.DELEGATED_AUTHORITY_ADDRESS!,
+          signer
+        );
+
+        // 1. Register target
+        const regTx = await authService.registerTarget(contractAddress);
+        registrationTxHash = regTx.hash;
+
+        // 2. Add delegates (KillSwitch and TimeLock)
+        const killSwitchAddress = process.env.KILLSWITCHADDRESS;
+        const timelockAddress = process.env.TIMELOCK_ADDRESS;
+
+        if (killSwitchAddress) {
+          await (await authService.addDelegate(contractAddress, killSwitchAddress)).wait();
+        }
+        if (timelockAddress) {
+          await (await authService.addDelegate(contractAddress, timelockAddress)).wait();
+        }
+
+        // 3. Grant Permission (kaizenPause selector: 0xcfc5c791)
+        const pauseSelector = "0xcfc5c791";
+        await (await authService.grantPermission(contractAddress, pauseSelector)).wait();
+
+        // Update project with tx hash
+        await prisma.userProjects.update({
+          where: { id: createProject.id },
+          data: { registrationTxHash },
+        });
+      } catch (blockchainError) {
+        console.error("Blockchain registration error:", blockchainError);
+        // We don't fail the whole request, but we log it.
+        // The project is still created in DB.
+      }
+
       return res.status(HTTPStatus.Created).json({
         success: true,
-        message: "Project created successfully",
+        message: "Project created and registration initiated",
         data: {
           title: createProject.title,
           description: createProject.description,
           contractAddress: createProject.contractAddress,
+          registrationTxHash: registrationTxHash,
         },
       });
     } catch (error) {

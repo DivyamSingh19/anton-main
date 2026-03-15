@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import cookieParser from "cookie-parser"
+dotenv.config() 
 import userAuth from "./routes/auth"
 import connectDB from "./config/mongo"
 import dataRouter from "./routes/data"
@@ -24,7 +25,6 @@ app.use(cors({ origin: [
   "http://localhost:3000"
 ], credentials: true }));
 app.use(cookieParser())
-dotenv.config() 
 connectDB()
  
 const port = process.env.PORT 
@@ -64,7 +64,7 @@ app.use("/api/user/monitoring",monitoringRouter)
 
 app.use(
   "/api/delegated-authority",
-  delegatedAuthorityRouter(signer, process.env.CONTRACT_ADDRESS!)
+  delegatedAuthorityRouter(signer, process.env.DELEGATED_AUTHORITY_ADDRESS!)
 );
 const start = async () => {
   await initKafkaProducer();

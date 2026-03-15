@@ -24,8 +24,8 @@ function getTimelockContract(withSigner = false): ReturnType<typeof AntonTimeLoc
 }
 
 function getAuthorityContract(): ReturnType<typeof DelegatedAuthority__factory.connect> {
-  const address = process.env.AUTHORITY_ADDRESS;
-  if (!address) throw new Error("AUTHORITY_ADDRESS not set in environment");
+  const address = process.env.DELEGATED_AUTHORITY_ADDRESS;
+  if (!address) throw new Error("DELEGATED_AUTHORITY_ADDRESS not set in environment");
   return DelegatedAuthority__factory.connect(address, getProvider());
 }
 
@@ -107,9 +107,13 @@ export async function getLockedUntil(req: Request, res: Response): Promise<void>
 
 export async function triggerTimelock(req: Request, res: Response): Promise<void> {
   try {
-    const { target, callData } = req.body;
+    const { target, callData, signature } = req.body;
     if (!target) { res.status(400).json({ success: false, error: "target is required" }); return; }
     if (!callData) { res.status(400).json({ success: false, error: "callData is required" }); return; }
+
+    if (signature) {
+      console.log(`Timelock action authorized by browser signature: ${signature}`);
+    }
 
     const data = await TimelockService.triggerTimelock(
       getTimelockContract(true),

@@ -3,7 +3,7 @@ import { DelegatedAuthority } from "../ts/DelegatedAuthority";
 import DelegatedAuthorityABI from "../abi/DelegatedAuthority/DelegatedAuthority.json";
  
 const CONTRACT_INTERFACE = new ethers.Interface(
-  DelegatedAuthorityABI as unknown as InterfaceAbi
+  DelegatedAuthorityABI.abi
 );
 
 export class DelegatedAuthorityService {
