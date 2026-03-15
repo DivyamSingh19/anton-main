@@ -13,6 +13,8 @@ import killswitchRouter from "./blockchain/routes/killswitch.routes"
 import timelockRouter from "./blockchain/routes/timelock.routes"
 import monitoringRouter from "./routes/monitoring"
 import { initKafkaProducer } from "./kafka/config"
+import { ethers } from "ethers"
+import { delegatedAuthorityRouter } from "./blockchain/routes/delegated-authority.routes"
 const app = express()
 
 app.use(express.json({ limit: "10mb" }));
@@ -26,6 +28,9 @@ dotenv.config()
 connectDB()
  
 const port = process.env.PORT 
+const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+
 
 declare global{
     namespace Express{
@@ -57,6 +62,10 @@ app.use("/api/user/timelock",timelockRouter)
 //monitoring
 app.use("/api/user/monitoring",monitoringRouter)
 
+app.use(
+  "/api/delegated-authority",
+  delegatedAuthorityRouter(signer, process.env.CONTRACT_ADDRESS!)
+);
 const start = async () => {
   await initKafkaProducer();
 
