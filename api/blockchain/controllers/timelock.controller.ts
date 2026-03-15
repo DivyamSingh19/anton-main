@@ -4,10 +4,7 @@ import { AntonTimeLock__factory } from "../ts"
 import { DelegatedAuthority__factory } from "../ts";
 import * as TimelockService from "../services/timelock.service";
 
-// ─── Contract helpers ─────────────────────────────────────────────────────────
-// Contracts are instantiated per-request using your existing factory pattern.
-// For write calls a signer is required; pass PRIVATE_KEY via env.
-
+ 
 function getProvider(): ethers.JsonRpcProvider {
   const rpcUrl = process.env.RPC_URL;
   if (!rpcUrl) throw new Error("RPC_URL not set in environment");
