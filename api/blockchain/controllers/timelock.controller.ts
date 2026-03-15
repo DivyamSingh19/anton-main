@@ -3,8 +3,9 @@ import { ethers } from "ethers";
 import { AntonTimeLock__factory } from "../ts"
 import { DelegatedAuthority__factory } from "../ts";
 import * as TimelockService from "../services/timelock.service";
+import { encodeCallData } from "../services/timelock.service";
 
- 
+
 function getProvider(): ethers.JsonRpcProvider {
   const rpcUrl = process.env.RPC_URL;
   if (!rpcUrl) throw new Error("RPC_URL not set in environment");
@@ -24,20 +25,15 @@ function getTimelockContract(withSigner = false): ReturnType<typeof AntonTimeLoc
 }
 
 function getAuthorityContract(): ReturnType<typeof DelegatedAuthority__factory.connect> {
-  const address = process.env.DELEGATED_AUTHORITY_ADDRESS;
-  if (!address) throw new Error("DELEGATED_AUTHORITY_ADDRESS not set in environment");
+  const address = process.env.AUTHORITY_ADDRESS;
+  if (!address) throw new Error("AUTHORITY_ADDRESS not set in environment");
   return DelegatedAuthority__factory.connect(address, getProvider());
 }
-
-// ─── Param helper ─────────────────────────────────────────────────────────────
-// Express types req.params values as string | string[] — this narrows to string safely.
 
 function param(req: Request, key: string): string {
   const value = req.params[key];
   return Array.isArray(value) ? value[0] : value;
 }
-
-// ─── Error handler ────────────────────────────────────────────────────────────
 
 function handleError(res: Response, err: unknown): void {
   const message = err instanceof Error ? err.message : "Unknown error";
@@ -107,18 +103,33 @@ export async function getLockedUntil(req: Request, res: Response): Promise<void>
 
 export async function triggerTimelock(req: Request, res: Response): Promise<void> {
   try {
-    const { target, callData, signature } = req.body;
+    const { target, callData, functionSignature, args } = req.body;
     if (!target) { res.status(400).json({ success: false, error: "target is required" }); return; }
-    if (!callData) { res.status(400).json({ success: false, error: "callData is required" }); return; }
 
-    if (signature) {
-      console.log(`Timelock action authorized by browser signature: ${signature}`);
+    let resolvedCallData: string;
+
+    if (functionSignature) {
+      try {
+        resolvedCallData = encodeCallData(functionSignature, args ?? []);
+      } catch (encErr) {
+        const msg = encErr instanceof Error ? encErr.message : String(encErr);
+        res.status(400).json({ success: false, error: `Failed to encode functionSignature: ${msg}` });
+        return;
+      }
+    } else if (callData && callData !== "0x" && callData.length >= 10) {
+      resolvedCallData = callData;
+    } else {
+      res.status(400).json({
+        success: false,
+        error: 'Provide functionSignature (e.g. "pause()") or a valid hex callData with a 4-byte selector.',
+      });
+      return;
     }
 
     const data = await TimelockService.triggerTimelock(
       getTimelockContract(true),
       target,
-      callData
+      resolvedCallData
     );
     res.json({ success: true, data });
   } catch (err) {

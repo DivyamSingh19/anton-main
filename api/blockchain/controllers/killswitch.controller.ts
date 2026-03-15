@@ -14,8 +14,8 @@ function getProvider(): ethers.JsonRpcProvider {
 }
 
 function getSigner(): ethers.Wallet {
-  const privateKey = process.env.PRIVATE_KEY;
-  if (!privateKey) throw new Error("Contract error: PRIVATE_KEY env var is not set");
+  const privateKey = process.env.SIGNER_PRIVATE_KEY;
+  if (!privateKey) throw new Error("Contract error: SIGNER_PRIVATE_KEY env var is not set");
   return new ethers.Wallet(privateKey, getProvider());
 }
 
@@ -120,14 +120,10 @@ export async function getOwnerOf(req: Request, res: Response): Promise<void> {
  
 export async function triggerKillSwitch(req: Request, res: Response): Promise<void> {
   try {
-    const { target, pauseCallData, signature } = req.body as {
+    const { target, pauseCallData } = req.body as {
       target: string;
       pauseCallData: string;
-      signature?: string;
     };
-    if (signature) {
-      console.log(`Action authorized by browser signature: ${signature}`);
-    }
     const data = await KillSwitchSvc.triggerKillSwitch(
       getKillSwitchContract(true),
       target,
@@ -186,4 +182,4 @@ export async function getProtocolResumedEvents(req: Request, res: Response): Pro
   } catch (err) {
     handleError(res, err);
   }
-}
+}   

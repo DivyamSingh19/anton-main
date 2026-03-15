@@ -67,6 +67,15 @@ function assertHex(value: string, name: string): void {
   }
 }
 
+export function encodeCallData(
+  functionSignature: string,
+  args: unknown[] = []
+): string {
+  const iface = new ethers.Interface([`function ${functionSignature}`]);
+  const fnName = functionSignature.split("(")[0];
+  return iface.encodeFunctionData(fnName, args);
+}
+
 function parseTxReceipt(receipt: ethers.TransactionReceipt): TxReceipt {
   return {
     txHash: receipt.hash,

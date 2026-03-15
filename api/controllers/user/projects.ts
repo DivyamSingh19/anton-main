@@ -57,8 +57,6 @@ export class ProjectController {
           ownerSignature: signature,
         },
       });
-
-      // ─── Parallel Blockchain Registration & Setup ─────────────────────────────
       let registrationTxHash = null;
       try {
         const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
@@ -68,11 +66,9 @@ export class ProjectController {
           signer
         );
 
-        // 1. Register target
         const regTx = await authService.registerTarget(contractAddress);
         registrationTxHash = regTx.hash;
 
-        // 2. Add delegates (KillSwitch and TimeLock)
         const killSwitchAddress = process.env.KILLSWITCHADDRESS;
         const timelockAddress = process.env.TIMELOCK_ADDRESS;
 

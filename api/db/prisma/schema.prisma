@@ -57,8 +57,6 @@ model UserProjects {
   killswitches  ProjectKillSwitches[]
   fingerprint   ContractFingerPrint?
   monitoringList UserMonitoringList[]
-  registrationTxHash String?
-  ownerSignature     String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -409,3 +407,4 @@ model EngineerProfile {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
+

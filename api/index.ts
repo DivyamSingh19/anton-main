@@ -1,8 +1,8 @@
-import express from "express"
 import dotenv from "dotenv"
+dotenv.config()
+import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-dotenv.config() 
 import userAuth from "./routes/auth"
 import connectDB from "./config/mongo"
 import dataRouter from "./routes/data"
@@ -20,57 +20,66 @@ const app = express()
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
-app.use(cors({ origin: [
-  "http://localhost:3001",
-  "http://localhost:3000"
-], credentials: true }));
+app.use(cors({
+  origin: [
+    "http://localhost:3001",
+    "http://localhost:3000"
+  ], credentials: true
+}));
 app.use(cookieParser())
 connectDB()
- 
-const port = process.env.PORT 
-const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+
+const port = process.env.PORT
 
 
-declare global{
-    namespace Express{
-        interface Request{
-            userId?:string,
-            adminId?:string,
-            organizationId?:string,
-            engineerId?:string
-        }
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: string,
+      adminId?: string,
+      organizationId?: string,
+      engineerId?: string
     }
+  }
 }
 //user routes
 //auth
-app.use("/api/user/auth",userAuth)
+app.use("/api/user/auth", userAuth)
 //profile
-app.use("/api/user/profile",profileRouter)
+app.use("/api/user/profile", profileRouter)
 //webhook
-app.use("/api/user/webhook",webhookRouter)
+app.use("/api/user/webhook", webhookRouter)
 //data 
-app.use("/api/user/data",dataRouter)
+app.use("/api/user/data", dataRouter)
 //wallet
-app.use("/api/user/wallet",walletRouter)
+app.use("/api/user/wallet", walletRouter)
 //projects
-app.use("/api/user/projects",projectRouter)
+app.use("/api/user/projects", projectRouter)
 //killswitch
-app.use("/api/user/killswitch",killswitchRouter)
+app.use("/api/user/killswitch", killswitchRouter)
 //timelock
-app.use("/api/user/timelock",timelockRouter)
+app.use("/api/user/timelock", timelockRouter)
 //monitoring
-app.use("/api/user/monitoring",monitoringRouter)
+app.use("/api/user/monitoring", monitoringRouter)
 
 app.use(
   "/api/delegated-authority",
-  delegatedAuthorityRouter(signer, process.env.DELEGATED_AUTHORITY_ADDRESS!)
+  (req, res, next) => {
+    const address = process.env.CONTRACT_ADDRESS;
+    if (!address) {
+      res.status(503).json({ success: false, error: "CONTRACT_ADDRESS env var is not configured" });
+      return;
+    }
+    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+    const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+    return delegatedAuthorityRouter(signer, address)(req, res, next);
+  }
 );
 const start = async () => {
   await initKafkaProducer();
 
   app.listen(port, () => {
-    console.log("Server running on",port);
+    console.log("Server running on", port);
   });
 };
 
