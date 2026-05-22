@@ -61,22 +61,9 @@ app.use("/api/user/killswitch", killswitchRouter)
 app.use("/api/user/timelock", timelockRouter)
 //monitoring
 app.use("/api/user/monitoring", monitoringRouter)
-
-app.use(
-  "/api/delegated-authority",
-  (req, res, next) => {
-    const address = process.env.CONTRACT_ADDRESS;
-    if (!address) {
-      res.status(503).json({ success: false, error: "CONTRACT_ADDRESS env var is not configured" });
-      return;
-    }
-    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-    const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
-    return delegatedAuthorityRouter(signer, address)(req, res, next);
-  }
-);
+ 
 const start = async () => {
-  await initKafkaProducer();
+ 
 
   app.listen(port, () => {
     console.log("Server running on", port);
