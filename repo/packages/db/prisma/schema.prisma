@@ -11,3 +11,186 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+
+enum ProfileStatus {
+  INITIALIZED
+  COMPLETED
+  SKIPPED
+}
+
+model User {
+  id            String         @id @default(uuid())
+  username      String         @unique
+  email         String         @unique
+  passwordHash  String
+  createdAt     DateTime       @default(now())
+  profileStatus ProfileStatus  @default(SKIPPED)
+  sessions      UserSessions[]
+  projects      UserProjects[]
+  profile       UserProfile?
+  platforms     UserWebHooks[]
+  wallet        UserWallets?
+  monitoring    UserMonitoringList[]
+}
+
+model UserSessions {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  lastLogin    DateTime
+  sessionToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model UserProjects {
+  id          String        @id @default(uuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  status      ProjectStatus @default(ACTIVE)
+  description String?
+  title       String
+  contractAddress   String
+  abi         Json
+  attacks    ContractAttack[]
+  timelocks     ProjectTimeLocks[]
+  monitoringStatus  MONITORINGSTATUS?
+  killswitches  ProjectKillSwitches[]
+  fingerprint   ContractFingerPrint?
+  monitoringList UserMonitoringList[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum ProjectStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+enum MONITORINGSTATUS{
+  ACTIVE
+  INACTIVE
+}
+
+model UserProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  bio       String?
+  avatarUrl String?
+  headLine   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserWebHooks {
+  id         String   @id @default(uuid())
+  userId     String
+  slackurl   String?  @unique
+  discordUrl String?  @unique
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId, slackurl])
+  @@index([userId, discordUrl])
+}
+
+model UserWallets {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  walletAddress String   @unique
+  txId          String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ContractFingerPrint {
+  id        String   @id @default(uuid())
+  projectId String   @unique
+  project   UserProjects @relation(fields: [projectId], references: [id])
+
+  payableFunctions    String[]
+  adminFunctions      String[]
+  valueFunctions      String[]
+  governanceFunctions String[]
+  allFunctions        String[]
+
+  highRiskEvents    String[]
+  flowEvents        String[]
+  governanceEvents  String[]
+  allEvents         String[]
+
+  hasFlashLoan         Boolean @default(false)
+  hasAdminChange       Boolean @default(false)
+  hasGovernance        Boolean @default(false)
+  hasEmergencyWithdraw Boolean @default(false)
+  isPayable            Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserMonitoringList {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  projectId String
+  project   UserProjects @relation(fields: [projectId], references: [id])
+  isActive  Boolean  @default(true)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, projectId])
+}
+
+ 
+
+model ContractAttack{
+  id    String  @id @default(uuid())
+  description String
+  startedAt   DateTime
+  actionTaken String
+  alertsGenerated String
+  contractId  String
+  projects    UserProjects @relation(fields: [contractId],references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([contractId])
+}
+
+
+
+
+model ProjectTimeLocks{
+  id  String @id @default(uuid())
+  contractAddress  String
+  projectId    String 
+  txId      String
+  walletAddress   String
+  project      UserProjects @relation(fields: [projectId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime 
+
+}
+
+model ProjectKillSwitches{
+  id  String @id @default(uuid())
+  contractAddress  String
+  projectId    String 
+  txId      String
+  walletAddress String
+  project      UserProjects @relation(fields: [projectId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime 
+
+}
+
