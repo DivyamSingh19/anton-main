@@ -12,7 +12,6 @@ datasource db {
   provider = "postgresql"
 }
 
-
 enum ProfileStatus {
   INITIALIZED
   COMPLETED
@@ -20,12 +19,12 @@ enum ProfileStatus {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  username      String         @unique
-  email         String         @unique
+  id            String               @id @default(uuid())
+  username      String               @unique
+  email         String               @unique
   passwordHash  String
-  createdAt     DateTime       @default(now())
-  profileStatus ProfileStatus  @default(SKIPPED)
+  createdAt     DateTime             @default(now())
+  profileStatus ProfileStatus        @default(SKIPPED)
   sessions      UserSessions[]
   projects      UserProjects[]
   profile       UserProfile?
@@ -48,22 +47,22 @@ model UserSessions {
 }
 
 model UserProjects {
-  id          String        @id @default(uuid())
-  userId      String
-  user        User          @relation(fields: [userId], references: [id])
-  status      ProjectStatus @default(ACTIVE)
-  description String?
-  title       String
-  contractAddress   String
-  abi         Json
-  attacks    ContractAttack[]
-  timelocks     ProjectTimeLocks[]
-  monitoringStatus  MONITORINGSTATUS?
-  killswitches  ProjectKillSwitches[]
-  fingerprint   ContractFingerPrint?
-  monitoringList UserMonitoringList[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id               String                @id @default(uuid())
+  userId           String
+  user             User                  @relation(fields: [userId], references: [id])
+  status           ProjectStatus         @default(ACTIVE)
+  description      String?
+  title            String
+  contractAddress  String
+  abi              Json
+  attacks          ContractAttack[]
+  timelocks        ProjectTimeLocks[]
+  monitoringStatus MONITORINGSTATUS?
+  killswitches     ProjectKillSwitches[]
+  fingerprint      ContractFingerPrint?
+  monitoringList   UserMonitoringList[]
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
 }
 
 enum ProjectStatus {
@@ -71,7 +70,8 @@ enum ProjectStatus {
   INACTIVE
   ARCHIVED
 }
-enum MONITORINGSTATUS{
+
+enum MONITORINGSTATUS {
   ACTIVE
   INACTIVE
 }
@@ -82,7 +82,7 @@ model UserProfile {
   user      User     @relation(fields: [userId], references: [id])
   bio       String?
   avatarUrl String?
-  headLine   String?
+  headLine  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -113,8 +113,8 @@ model UserWallets {
 }
 
 model ContractFingerPrint {
-  id        String   @id @default(uuid())
-  projectId String   @unique
+  id        String       @id @default(uuid())
+  projectId String       @unique
   project   UserProjects @relation(fields: [projectId], references: [id])
 
   payableFunctions    String[]
@@ -123,10 +123,10 @@ model ContractFingerPrint {
   governanceFunctions String[]
   allFunctions        String[]
 
-  highRiskEvents    String[]
-  flowEvents        String[]
-  governanceEvents  String[]
-  allEvents         String[]
+  highRiskEvents   String[]
+  flowEvents       String[]
+  governanceEvents String[]
+  allEvents        String[]
 
   hasFlashLoan         Boolean @default(false)
   hasAdminChange       Boolean @default(false)
@@ -139,58 +139,51 @@ model ContractFingerPrint {
 }
 
 model UserMonitoringList {
-  id        String   @id @default(uuid())
+  id        String       @id @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User         @relation(fields: [userId], references: [id])
   projectId String
   project   UserProjects @relation(fields: [projectId], references: [id])
-  isActive  Boolean  @default(true)
-  
+  isActive  Boolean      @default(true)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@unique([userId, projectId])
 }
 
- 
-
-model ContractAttack{
-  id    String  @id @default(uuid())
-  description String
-  startedAt   DateTime
-  actionTaken String
+model ContractAttack {
+  id              String       @id @default(uuid())
+  description     String
+  startedAt       DateTime
+  actionTaken     String
   alertsGenerated String
-  contractId  String
-  projects    UserProjects @relation(fields: [contractId],references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  contractId      String
+  projects        UserProjects @relation(fields: [contractId], references: [id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
   @@index([contractId])
 }
 
-
-
-
-model ProjectTimeLocks{
-  id  String @id @default(uuid())
-  contractAddress  String
-  projectId    String 
-  txId      String
+model ProjectTimeLocks {
+  id              String       @id @default(uuid())
+  contractAddress String
+  projectId       String
+  txId            String
   walletAddress   String
-  project      UserProjects @relation(fields: [projectId],references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime 
-
+  project         UserProjects @relation(fields: [projectId], references: [id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime
 }
 
-model ProjectKillSwitches{
-  id  String @id @default(uuid())
-  contractAddress  String
-  projectId    String 
-  txId      String
-  walletAddress String
-  project      UserProjects @relation(fields: [projectId],references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime 
-
+model ProjectKillSwitches {
+  id              String       @id @default(uuid())
+  contractAddress String
+  projectId       String
+  txId            String
+  walletAddress   String
+  project         UserProjects @relation(fields: [projectId], references: [id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime
 }
-
